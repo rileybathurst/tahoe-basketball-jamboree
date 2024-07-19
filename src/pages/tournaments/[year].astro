@@ -1,0 +1,21 @@
+---
+// import qs from "qs";
+
+export async function getStaticPaths() {
+  const url = new URL(`${import.meta.env.STRAPI_URL}api/tournaments`);
+
+  const data = await fetch(url).then((response) => response.json());
+
+  return data.data.map((year) => {
+    console.log(year);
+
+    return {
+      params: { year: year.attributes.year },
+      props: { year },
+    };
+  });
+}
+const { year } = Astro.props;
+---
+
+<h1>{year.attributes.year}</h1>
