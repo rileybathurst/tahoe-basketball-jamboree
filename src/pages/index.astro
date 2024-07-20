@@ -2,12 +2,12 @@
 import fetchApi from "../lib/strapi";
 
 interface tournamentTypesIndex {
+  id: string;
   attributes: {
     year: string;
   };
 }
-[];
-const tournaments = await fetchApi<tournamentTypesIndex>({
+const tournaments = await fetchApi<tournamentTypesIndex[]>({
   endpoint: "tournaments",
   wrappedByKey: "data",
   populate: {
@@ -32,9 +32,9 @@ const tournaments = await fetchApi<tournamentTypesIndex>({
     <main>
       <ul>
         {
-          tournaments.map((tournament: tournamentTypesIndex) => (
+          tournaments.map((tournament) => (
             <li>
-              <a href="/tournaments/{tournament.attributes.year}">
+              <a href={`/tournaments/${tournament.attributes.year}`}>
                 {tournament.attributes.year}
               </a>
             </li>

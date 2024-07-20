@@ -1,28 +1,25 @@
 ---
 import qs from "qs";
+// TODO: I can maybe use the lib/strapi.ts or build this into a new one
 
-/**
- * Fetches data from the Strapi API
- * @param endpoint - The endpoint to fetch from
- * @param query - The query parameters to add to the url
- * @param wrappedByKey - The key to unwrap the response from
- * @param wrappedByList - If the response is a list, unwrap it
- * @param populate - The fields to populate
- * @returns
- */
-
-export async function getStaticPaths(populate) {
+export async function getStaticPaths() {
   const url = new URL(`${import.meta.env.STRAPI_URL}api/tournaments`);
-
-  let data = await fetch(
-    `${url}${populate ? `?${qs.stringify({ populate })}` : ""}`
-  ).then((response) => response.json());
 
   const query = qs.stringify({
     populate: {
       games: {
         populate: {
           fields: ["home_team"],
+          home_team: {
+            populate: {
+              fields: ["name"],
+            },
+          },
+          away_team: {
+            populate: {
+              fields: ["name"],
+            },
+          },
         },
       },
       year: {
@@ -31,32 +28,69 @@ export async function getStaticPaths(populate) {
     },
   });
 
-  // console.log(query);
+  const data = await fetch(`${url}?${query}`).then((response) =>
+    response.json()
+  );
 
-  if (query) {
-    for (const [key, value] of Object.entries(query)) {
-      url.searchParams.append(key, value);
-    }
+  interface yearTypes {
+    attributes: {
+      year: string;
+    };
   }
-
-  const res = await fetch(url.toString());
-
-  // let data = await res.json();
-
-  console.log(data);
-
-  return data.data.map((year) => {
-    console.log(year);
-    // console.log(year.attributes.year);
-    console.log(year.attributes.games);
-
+  return data.data.map((year: yearTypes) => {
     return {
       params: { year: year.attributes.year },
       props: { year },
     };
   });
 }
-const { year } = Astro.props;
+
+interface yearPageTypes {
+  attributes: {
+    year: string;
+    games: {
+      data: Array<{
+        attributes: {
+          home_team: {
+            data: {
+              attributes: {
+                name: string;
+              };
+            };
+          };
+          away_team: {
+            data: {
+              attributes: {
+                name: string;
+              };
+            };
+          };
+          home_team_score: number;
+          away_team_score: number;
+        };
+      }>;
+    };
+  };
+}
+const { year } = Astro.props as { year: yearPageTypes };
 ---
 
 <h1>{year.attributes.year}</h1>
+
+<ul>
+  {
+    year.attributes.games.data.map((game) => (
+      <li>
+        <p>
+          {game.attributes.home_team.data.attributes.name} vs&nbsp;
+          {game.attributes.away_team.data.attributes.name}
+        </p>
+        <p>
+          {game.attributes.home_team_score} - {game.attributes.away_team_score}
+        </p>
+      </li>
+    ))
+  }
+</ul>
+
+<a href="/">home</a>
