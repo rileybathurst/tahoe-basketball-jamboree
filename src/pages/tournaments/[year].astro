@@ -1,13 +1,54 @@
 ---
-// import qs from "qs";
+import qs from "qs";
 
-export async function getStaticPaths() {
+/**
+ * Fetches data from the Strapi API
+ * @param endpoint - The endpoint to fetch from
+ * @param query - The query parameters to add to the url
+ * @param wrappedByKey - The key to unwrap the response from
+ * @param wrappedByList - If the response is a list, unwrap it
+ * @param populate - The fields to populate
+ * @returns
+ */
+
+export async function getStaticPaths(populate) {
   const url = new URL(`${import.meta.env.STRAPI_URL}api/tournaments`);
 
-  const data = await fetch(url).then((response) => response.json());
+  let data = await fetch(
+    `${url}${populate ? `?${qs.stringify({ populate })}` : ""}`
+  ).then((response) => response.json());
+
+  const query = qs.stringify({
+    populate: {
+      games: {
+        populate: {
+          fields: ["home_team"],
+        },
+      },
+      year: {
+        populate: true,
+      },
+    },
+  });
+
+  // console.log(query);
+
+  if (query) {
+    for (const [key, value] of Object.entries(query)) {
+      url.searchParams.append(key, value);
+    }
+  }
+
+  const res = await fetch(url.toString());
+
+  // let data = await res.json();
+
+  console.log(data);
 
   return data.data.map((year) => {
     console.log(year);
+    // console.log(year.attributes.year);
+    console.log(year.attributes.games);
 
     return {
       params: { year: year.attributes.year },
