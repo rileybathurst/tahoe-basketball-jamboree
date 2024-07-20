@@ -76,19 +76,34 @@ const { year } = Astro.props as { year: yearPageTypes };
 ---
 
 <h1>{year.attributes.year}</h1>
-
+<!-- TODO: order is going to be hard unless I do it manually as only some have dates -->
 <ul>
   {
     year.attributes.games.data.map((game) => (
       <li>
-        <p>
-          {game.attributes.home_team.data.attributes.name} vs&nbsp;
-          {game.attributes.away_team.data.attributes.name}
-        </p>
-        <p>
-          {game.attributes.home_team_score} - {game.attributes.away_team_score}
-        </p>
+        {game.attributes.home_team_score > game.attributes.away_team_score ? (
+          <div class="home-win">
+            {game.attributes.home_team.data.attributes.name}
+            {game.attributes.home_team_score}
+            over
+          </div>
+          <div class="away-loss">
+            {game.attributes.away_team.data.attributes.name}
+            {game.attributes.away_team_score}
+            </div>
+        ) : (
+          <div class="away-win">
+            {game.attributes.away_team.data.attributes.name}
+            {game.attributes.away_team_score}
+            over
+          </div>
+          <div class="home-loss">
+            {game.attributes.home_team.data.attributes.name}
+            {game.attributes.home_team_score}
+          </div>
+        )}
       </li>
+      <hr />
     ))
   }
 </ul>
