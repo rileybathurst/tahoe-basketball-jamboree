@@ -1,0 +1,52 @@
+---
+const {
+  home_team,
+  home_team_score,
+  away_team,
+  away_team_score,
+  date,
+  time,
+  locations,
+} = Astro.props;
+
+// console.log(locations);
+// console.log(locations.data[0]);
+---
+
+<section class="scorecard">
+  <div
+    class={`scoreteam ${home_team_score > away_team_score ? "win" : "loss"}`}
+  >
+    <a href={`/teams/${home_team.data.attributes.slug}`}>
+      {home_team.data.attributes.name}
+    </a>
+    {home_team_score}
+  </div>
+
+  <div class="vs">vs</div>
+
+  <div
+    class={`scoreteam ${away_team_score > home_team_score ? "win" : "loss"}`}
+  >
+    <a href={`/teams/${away_team.data.attributes.slug}`}>
+      {away_team.data.attributes.name}
+    </a>
+    {away_team_score}
+  </div>
+
+  <div class="details">
+    <!-- TODO: real html dates -->
+    <!-- TODO: fix the splits -->
+    {date ? <div class="date">{date}</div> : null}
+    {time ? <div class="time">{time}</div> : null}
+
+    {
+      locations ? (
+        <>
+          <hr />
+          <div class="location">{locations.data[0].attributes.name}</div>
+        </>
+      ) : null
+    }
+  </div>
+</section>

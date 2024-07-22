@@ -1,6 +1,28 @@
 ---
+import Layout from "../../components/layout.astro";
+import {
+  BlocksRenderer,
+  type BlocksContent,
+} from "@strapi/blocks-react-renderer";
+import type tournamentTypesIndex from "../../interfaces/tournament-types";
+
+import fetchApi from "../../lib/strapi";
 import qs from "qs";
+import Scorecard from "../../components/scorecard.astro";
 // TODO: I can maybe use the lib/strapi.ts or build this into a new one
+
+import { gameTeamFragment } from "../../fragments/game-team-fragment";
+import { gameDetailFragment } from "../../fragments/game-detail-fragment";
+
+const tournaments = await fetchApi<tournamentTypesIndex[]>({
+  endpoint: "tournaments",
+  wrappedByKey: "data",
+  populate: {
+    year: {
+      populate: true,
+    },
+  },
+});
 
 export async function getStaticPaths() {
   const url = new URL(`${import.meta.env.STRAPI_URL}api/tournaments`);
@@ -9,20 +31,20 @@ export async function getStaticPaths() {
     populate: {
       games: {
         populate: {
-          fields: ["home_team"],
           home_team: {
-            populate: {
-              fields: ["name"],
-            },
+            gameTeamFragment,
           },
+          home_team_score: true,
           away_team: {
-            populate: {
-              fields: ["name"],
-            },
+            gameTeamFragment,
           },
+          gameDetailFragment,
         },
       },
       year: {
+        populate: true,
+      },
+      notes: {
         populate: true,
       },
     },
@@ -48,6 +70,7 @@ export async function getStaticPaths() {
 interface yearPageTypes {
   attributes: {
     year: string;
+    notes: BlocksContent;
     games: {
       data: Array<{
         attributes: {
@@ -55,6 +78,7 @@ interface yearPageTypes {
             data: {
               attributes: {
                 name: string;
+                slug: string;
               };
             };
           };
@@ -62,50 +86,69 @@ interface yearPageTypes {
             data: {
               attributes: {
                 name: string;
+                slug: string;
               };
             };
           };
           home_team_score: number;
           away_team_score: number;
+          date: string;
+          time: string;
+          location: {
+            data: {
+              attributes: {
+                name: string;
+                slug: string;
+              };
+            };
+          };
         };
       }>;
     };
   };
 }
 const { year } = Astro.props as { year: yearPageTypes };
+
+// console.log(year.attributes.notes);
 ---
 
-<h1>{year.attributes.year}</h1>
-<!-- TODO: order is going to be hard unless I do it manually as only some have dates -->
-<ul>
-  {
-    year.attributes.games.data.map((game) => (
-      <li>
-        {game.attributes.home_team_score > game.attributes.away_team_score ? (
-          <div class="home-win">
-            {game.attributes.home_team.data.attributes.name}
-            {game.attributes.home_team_score}
-            over
-          </div>
-          <div class="away-loss">
-            {game.attributes.away_team.data.attributes.name}
-            {game.attributes.away_team_score}
-            </div>
-        ) : (
-          <div class="away-win">
-            {game.attributes.away_team.data.attributes.name}
-            {game.attributes.away_team_score}
-            over
-          </div>
-          <div class="home-loss">
-            {game.attributes.home_team.data.attributes.name}
-            {game.attributes.home_team_score}
-          </div>
-        )}
-      </li>
-      <hr />
-    ))
-  }
-</ul>
+<Layout>
+  <main>
+    <!-- TODO: make this a left sidebar so Im doing something interesting -->
+    <h1>{year.attributes.year}</h1>
 
-<a href="/">home</a>
+    {
+      year.attributes.notes ? (
+        <>
+          <h2>Notes</h2>
+          <BlocksRenderer content={year.attributes.notes} />
+        </>
+      ) : null
+    }
+
+    <!-- TODO: order is going to be hard unless I do it manually as only some have dates -->
+    <!-- TODO: component for a score-card -->
+    <section class="scoredeck">
+      {
+        year.attributes.games.data.map((game) => (
+          <Scorecard {...game.attributes} />
+        ))
+      }
+    </section>
+  </main>
+
+  <section>
+    <h2>Tournaments</h2>
+    <ul>
+      {
+        tournaments.map((tournament) => (
+          <li>
+            <a href={`/tournaments/${tournament.attributes.year}`}>
+              {tournament.attributes.year}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</Layout>

@@ -1,0 +1,63 @@
+---
+import Layout from "../../components/layout.astro";
+import Scorecard from "../../components/scorecard.astro";
+import { gameTeamFragment } from "../../fragments/game-team-fragment";
+import { gameDetailFragment } from "../../fragments/game-detail-fragment";
+import qs from "qs";
+
+export async function getStaticPaths() {
+  const url = new URL(`${import.meta.env.STRAPI_URL}api/games`);
+
+  const query = qs.stringify({
+    populate: {
+      home_team: {
+        gameTeamFragment,
+      },
+      away_team: {
+        gameTeamFragment,
+      },
+      gameDetailFragment,
+      location: {
+        populate: {
+          name: true,
+        },
+      },
+    },
+  });
+
+  const data = await fetch(`${url}?${query}`).then((response) =>
+    response.json()
+  );
+
+  interface gameTypes {
+    id: number;
+  }
+  return data.data.map((game: gameTypes) => {
+    // console.log(game);
+    // console.log(game.id);
+    return {
+      params: { game: game.id },
+      props: { game },
+    };
+  });
+}
+
+interface gamePageTypes {
+  attributes: {
+    name: number;
+  };
+}
+const { game } = Astro.props as { game: gamePageTypes };
+
+// console.log(game);
+console.log(game.attributes);
+// console.log(game.attributes.locations.data);
+---
+
+<Layout>
+  <main>
+    <section class="scoredeck">
+      <Scorecard {...game.attributes} />
+    </section>
+  </main>
+</Layout>

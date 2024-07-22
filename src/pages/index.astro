@@ -1,13 +1,8 @@
 ---
 import Layout from "../components/layout.astro";
 import fetchApi from "../lib/strapi";
+import type tournamentTypesIndex from "../interfaces/tournament-types";
 
-interface tournamentTypesIndex {
-  id: string;
-  attributes: {
-    year: string;
-  };
-}
 const tournaments = await fetchApi<tournamentTypesIndex[]>({
   endpoint: "tournaments",
   wrappedByKey: "data",
@@ -21,6 +16,8 @@ const tournaments = await fetchApi<tournamentTypesIndex[]>({
 
 <Layout>
   <main>
+    <h2>Tournaments</h2>
+    <!-- TODO: cancelled years should have a specific note and strike -->
     <ul>
       {
         tournaments.map((tournament) => (

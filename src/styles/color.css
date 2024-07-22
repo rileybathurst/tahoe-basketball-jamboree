@@ -1,0 +1,26 @@
+/*------------------------------------*/
+/* #COLOR */
+/*------------------------------------*/
+/* .scoredeck {
+} */
+.scorecard {
+  background-color: var(--brilliance);
+  text-align: center;
+
+  .scoreteam {
+    border: 2px solid var(--brilliance);
+    box-shadow: var(--penumbra);
+    color: var(--brilliance);
+
+    a {
+      color: var(--brilliance);
+    }
+  }
+
+  .win {
+    background-color: var(--win-100);
+  }
+  .loss {
+    background-color: tomato;
+  }
+}

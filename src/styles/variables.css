@@ -14,9 +14,26 @@
   --brilliance: hsl(0 0% 97.5%);
 
   /*------------------------------------*/
+  /* #COLOR */
+  /*------------------------------------*/
+
+  --win-100: oklch(60% 0.11 160);
+  --win-600: oklch(95% 0.04 160);
+
+  /*------------------------------------*/
   /* #TYPOGRAPHY */
   /*------------------------------------*/
   --font-sans: sans-serif;
+
+  /* 🏔 Mountain Names as Font Sizing Defaults */
+  /* (Highest by Continent) */
+  --everest: 3.25rem; /* 29,035ft Asia */
+  --aconcagua: 2.5rem; /* 22,840ft South America */
+  --denali: 2rem; /* 20,320ft North America */
+  --kilimanjaro: 1.5rem; /* 19,340ft Africa */
+  --elbrus: 1.25rem; /* 18,510ft Europe / Russia */
+  --vinson: 1rem; /* 16,050ft Antartica */
+  --kosciuszko: 0.75rem; /* 7,310ft Australia */
 
   /*------------------*/
   /*  #WIDTHS */
@@ -29,4 +46,22 @@
   --condor: 30rem;
   --pelican: 50rem;
   --albatross: 80rem;
+
+  /*------------------*/
+  /*  #SHADOWS */
+  /*------------------*/
+
+  /* Umbra is direct light - dark - for active down clicks */
+  /* Antumbra is eclipsed - medium - for hover */
+  /* Penumbra is obscured - light - for layering but waiting */
+
+  --penumbra: 0 3px 6px hsla(0, 0%, 0%, 0.12), 0 2px 4px hsla(0, 0%, 0%, 0.1);
+  --antumbra: 0 14px 24px hsla(0, 0%, 0%, 0.16),
+    0 4px 12px hsla(0, 0%, 0%, 0.12);
+  --umbra: 0 5px 12px hsla(0, 0%, 0%, 0.4) /* Ambient light shadow */,
+    0 18px 32px hsla(0, 0%, 0%, 0.16) /* Direct light shadow */;
+
+  /* shadows on dark backgrounds */
+  --penumbra--dark: 0 3px 6px hsla(0, 0%, 100%, 0.12),
+    0 2px 4px hsla(0, 0%, 100%, 0.1);
 }

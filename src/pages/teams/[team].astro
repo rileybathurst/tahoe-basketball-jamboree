@@ -1,0 +1,77 @@
+---
+import Layout from "../../components/layout.astro";
+import Scorecard from "../../components/scorecard.astro";
+import qs from "qs";
+// I dont seem to be able to go above this level of nesting
+import { gameTeamFragment } from "../../fragments/game-team-fragment";
+import { gameDetailFragment } from "../../fragments/game-detail-fragment";
+
+export async function getStaticPaths() {
+  const url = new URL(`${import.meta.env.STRAPI_URL}api/teams`);
+
+  const query = qs.stringify({
+    populate: {
+      name: {
+        populate: true,
+      },
+      slug: {
+        populate: true,
+      },
+
+      home_games: {
+        populate: {
+          home_team: {
+            gameTeamFragment,
+          },
+          away_team: {
+            gameTeamFragment,
+          },
+          gameDetailFragment,
+        },
+      },
+    },
+  });
+
+  const data = await fetch(`${url}?${query}`).then((response) =>
+    response.json()
+  );
+
+  interface teamTypes {
+    attributes: {
+      slug: string;
+    };
+  }
+  return data.data.map((team: teamTypes) => {
+    return {
+      params: { team: team.attributes.slug },
+      props: { team },
+    };
+  });
+}
+
+interface teamPageTypes {
+  attributes: {
+    name: string;
+  };
+}
+const { team } = Astro.props as { team: teamPageTypes };
+
+// console.log(team.attributes);
+// console.log(team.attributes.home_games.data);
+---
+
+<Layout>
+  <main>
+    <h1>{team.attributes.name}</h1>
+
+    <hr />
+
+    <section class="scoredeck">
+      {
+        team.attributes.home_games.data.map((game) => (
+          <Scorecard {...game.attributes} />
+        ))
+      }
+    </section>
+  </main>
+</Layout>
