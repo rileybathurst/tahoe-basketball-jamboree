@@ -1,0 +1,32 @@
+:root {
+  /*------------------------------------*/
+  /* #NEUTRALS */
+  /*------------------------------------*/
+
+  --black-metal: hsl(0 0% 2.5%);
+  --black-out: hsl(0 0% 12.5%);
+  --raven-black: hsl(0 0% 25%);
+  --industrial-revolution: hsl(0 0% 37.5%);
+  /* grey */
+  --cold-grey: hsl(0 0% 62.5%);
+  --tin-soldier: hsl(0 0% 75%);
+  --kingly-cloud: hsl(0 0% 87.5%);
+  --brilliance: hsl(0 0% 97.5%);
+
+  /*------------------------------------*/
+  /* #TYPOGRAPHY */
+  /*------------------------------------*/
+  --font-sans: sans-serif;
+
+  /*------------------*/
+  /*  #WIDTHS */
+  /* https://en.wikipedia.org/wiki/Largest_living_flying_birds_by_wingspan */
+  /* golden ratio 1.618 */
+  /*------------------*/
+
+  --vulture: 10rem;
+  --stork: 18rem;
+  --condor: 30rem;
+  --pelican: 50rem;
+  --albatross: 80rem;
+}
