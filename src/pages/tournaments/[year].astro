@@ -165,9 +165,22 @@ const sortedDates = datesArray.sort((a, b) => a.localeCompare(b));
             <h2>{date}</h2>
             {year.attributes.games.data
               // sort by time
-              .sort((a, b) =>
-                a.attributes.time.localeCompare(b.attributes.time)
-              )
+              // this needs a fallback for when there is no time
+              .sort((a, b) => {
+                if (a.attributes.time && b.attributes.time) {
+                  return a.attributes.time.localeCompare(b.attributes.time);
+                } else if (a.attributes.time) {
+                  return -1; // a has time, b does not
+                } else if (b.attributes.time) {
+                  return 1; // b has time, a does not
+                } else {
+                  return 0; // neither a nor b has time
+                }
+              })
+
+              // these wont work as they are not numbers
+              // .sort((a, b) => a.attributes.time - b.attributes.time) // does this fallback?
+
               .map((game) => {
                 if (game.attributes.date === date) {
                   return <Scorecard {...game.attributes} />;
