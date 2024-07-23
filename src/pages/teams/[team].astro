@@ -49,9 +49,51 @@ export async function getStaticPaths() {
   });
 }
 
+// TODO: variables for the types
 interface teamPageTypes {
   attributes: {
     name: string;
+    home_games: {
+      data: {
+        attributes: {
+          rounds: {
+            data: {
+              attributes: {
+                name: string;
+              };
+            };
+          };
+          home_team: {
+            data: {
+              attributes: {
+                name: string;
+                slug: string;
+              };
+            };
+          };
+          home_team_score: number;
+          away_team: {
+            data: {
+              attributes: {
+                name: string;
+                slug: string;
+              };
+            };
+          };
+          away_team_score: number;
+          date: string;
+          time: string;
+          locations: {
+            data: {
+              attributes: {
+                name: string;
+              };
+            };
+          };
+          overtime: boolean;
+        };
+      }[];
+    };
   };
 }
 const { team } = Astro.props as { team: teamPageTypes };

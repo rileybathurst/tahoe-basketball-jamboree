@@ -1,24 +1,28 @@
 ---
 const {
+  round,
   home_team,
   home_team_score,
   away_team,
   away_team_score,
   date,
   time,
-  locations,
+  overtime,
 } = Astro.props;
-
-// console.log(locations);
-// console.log(locations.data[0]);
 ---
 
 <section class="scorecard">
+  {
+    round ? (
+      <div class="round capitalize">{round?.data?.attributes.name}</div>
+    ) : null
+  }
+
   <div
     class={`scoreteam ${home_team_score > away_team_score ? "win" : "loss"}`}
   >
-    <a href={`/teams/${home_team.data.attributes.slug}`}>
-      {home_team.data.attributes.name}
+    <a href={`/teams/${home_team.data?.attributes.slug}`}>
+      {home_team.data?.attributes.name}
     </a>
     {home_team_score}
   </div>
@@ -28,25 +32,34 @@ const {
   <div
     class={`scoreteam ${away_team_score > home_team_score ? "win" : "loss"}`}
   >
-    <a href={`/teams/${away_team.data.attributes.slug}`}>
-      {away_team.data.attributes.name}
+    <a href={`/teams/${away_team.data?.attributes.slug}`}>
+      {away_team.data?.attributes.name}
     </a>
     {away_team_score}
   </div>
 
-  <div class="details">
+  {overtime ? <div class="overtime">Overtime</div> : null}
+
+  <div class="game-details">
     <!-- TODO: real html dates -->
     <!-- TODO: fix the splits -->
-    {date ? <div class="date">{date}</div> : null}
-    {time ? <div class="time">{time}</div> : null}
-
     {
+      date || time ? (
+        <p>
+          {date ? <span class="date">{date}</span> : null}
+          {time ? <span class="time">{time}</span> : null}
+        </p>
+      ) : null
+    }
+
+    <!-- TODO: I broke the api on locations it was a multiple by mistake -->
+    <!-- {
       locations ? (
         <>
           <hr />
-          <div class="location">{locations.data[0].attributes.name}</div>
+          <div class="location">{locations.data[0]?.attributes.name}</div>
         </>
       ) : null
-    }
+    } -->
   </div>
 </section>

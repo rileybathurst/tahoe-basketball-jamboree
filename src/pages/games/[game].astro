@@ -22,6 +22,11 @@ export async function getStaticPaths() {
           name: true,
         },
       },
+      round: {
+        populate: {
+          name: true,
+        },
+      },
     },
   });
 

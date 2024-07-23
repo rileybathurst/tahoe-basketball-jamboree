@@ -5,7 +5,6 @@ import {
   type BlocksContent,
 } from "@strapi/blocks-react-renderer";
 import type tournamentTypesIndex from "../../interfaces/tournament-types";
-
 import fetchApi from "../../lib/strapi";
 import qs from "qs";
 import Scorecard from "../../components/scorecard.astro";
@@ -29,6 +28,12 @@ export async function getStaticPaths() {
 
   const query = qs.stringify({
     populate: {
+      year: {
+        populate: true,
+      },
+      notes: {
+        populate: true,
+      },
       games: {
         populate: {
           home_team: {
@@ -38,14 +43,13 @@ export async function getStaticPaths() {
           away_team: {
             gameTeamFragment,
           },
+          round: {
+            populate: {
+              name: true,
+            },
+          },
           gameDetailFragment,
         },
-      },
-      year: {
-        populate: true,
-      },
-      notes: {
-        populate: true,
       },
     },
   });
@@ -90,15 +94,27 @@ interface yearPageTypes {
               };
             };
           };
-          home_team_score: number;
-          away_team_score: number;
-          date: string;
-          time: string;
           location: {
             data: {
               attributes: {
                 name: string;
                 slug: string;
+              };
+            };
+          };
+          date: string;
+          time: string;
+          round: {
+            data: {
+              attributes: {
+                name: string;
+              };
+            };
+          };
+          rounds: {
+            data: {
+              attributes: {
+                name: string;
               };
             };
           };
@@ -109,7 +125,20 @@ interface yearPageTypes {
 }
 const { year } = Astro.props as { year: yearPageTypes };
 
-// console.log(year.attributes.notes);
+// console.log(year.attributes.games.data);
+
+// TODO: I need a fallback for when there are no dates or times to reset the order
+// create a set of the dates
+const datesPlayed = new Set<string>();
+for (const game of year.attributes.games.data) {
+  if (game.attributes.date) {
+    datesPlayed.add(game.attributes.date);
+  }
+}
+console.log(datesPlayed);
+// convert to array
+const datesArray: string[] = Array.from(datesPlayed);
+const sortedDates = datesArray.sort((a, b) => a.localeCompare(b));
 ---
 
 <Layout>
@@ -130,14 +159,27 @@ const { year } = Astro.props as { year: yearPageTypes };
     <!-- TODO: component for a score-card -->
     <section class="scoredeck">
       {
-        year.attributes.games.data.map((game) => (
-          <Scorecard {...game.attributes} />
+        sortedDates.map((date) => (
+          <>
+            {/* TODO: convert to readable dates */}
+            <h2>{date}</h2>
+            {year.attributes.games.data
+              // sort by time
+              .sort((a, b) =>
+                a.attributes.time.localeCompare(b.attributes.time)
+              )
+              .map((game) => {
+                if (game.attributes.date === date) {
+                  return <Scorecard {...game.attributes} />;
+                }
+              })}
+          </>
         ))
       }
     </section>
   </main>
 
-  <section>
+  <!-- <section>
     <h2>Tournaments</h2>
     <ul>
       {
@@ -150,5 +192,5 @@ const { year } = Astro.props as { year: yearPageTypes };
         ))
       }
     </ul>
-  </section>
+  </section> -->
 </Layout>
