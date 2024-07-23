@@ -1,0 +1,77 @@
+---
+import type tournamentTypesIndex from "../../interfaces/tournament-types";
+import fetchApi from "../lib/strapi";
+
+const tournaments = await fetchApi<tournamentTypesIndex[]>({
+  endpoint: "tournaments",
+  wrappedByKey: "data",
+  populate: {
+    year: {
+      populate: true,
+    },
+    cancellation: {
+      populate: true,
+    },
+
+
+    games: {
+// ? why cant i populate the home_team and away_team?
+      home_team: {
+        populate: {
+          name: true,
+        },
+      },
+      // populate: true,
+      // Im not sure if I can keep going deeper or it maxes out at 1 level
+/*       populate: {
+        rounds: {
+          populate: {
+            name: true,
+          },
+        },
+      }, */
+/*         round: {
+          populate: true,
+        }, */
+      /* populate: {
+        data: {
+          populate: true,
+          round: {
+            data: {
+              populate: true,
+            },
+          },
+        },
+      }, */
+    },
+  },
+});
+
+// console.log(tournaments);
+const games = tournaments.map((tournament) => tournament.attributes.games);
+// console.log(games);
+// console.log(games.map((game) => game.data));
+const two = games.map((game) => game.data);
+console.log(two.map((game) => game.map((g2) => g2.attributes)));
+
+---
+
+<ul>
+  {
+    tournaments.map((tournament) => (
+      <li>
+        {tournament.attributes.cancellation ? (
+          <strike>{tournament.attributes.year}</strike><span> - {tournament.attributes.cancellation}</span>
+        ) : (
+          <a href={`/tournaments/${tournament.attributes.year}`}>
+            {tournament.attributes.year}
+          </a>
+        )}
+      </li>
+    ))
+  }
+</ul>
+
+
+
+<!-- TODO: winner is the next most interesting thing -->

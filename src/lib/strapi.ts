@@ -6,11 +6,13 @@ interface fetchApiTypes {
   wrappedByKey?: string;
   wrappedByList?: boolean;
   // https://docs.strapi.io/dev-docs/api/query-engine/populating
-  populate?: {
+  /* populate?: {
     [key: string]: {
       populate: boolean;
     };
-  };
+  }; */
+  // ! this will break but I want to figure out if i can get the data first
+  populate: any;
 }
 
 export default async function fetchApi<T>({

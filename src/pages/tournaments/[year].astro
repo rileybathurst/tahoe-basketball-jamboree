@@ -4,24 +4,11 @@ import {
   BlocksRenderer,
   type BlocksContent,
 } from "@strapi/blocks-react-renderer";
-import type tournamentTypesIndex from "../../interfaces/tournament-types";
-import fetchApi from "../../lib/strapi";
-import qs from "qs";
 import Scorecard from "../../components/scorecard.astro";
 // TODO: I can maybe use the lib/strapi.ts or build this into a new one
-
+import qs from "qs";
 import { gameTeamFragment } from "../../fragments/game-team-fragment";
 import { gameDetailFragment } from "../../fragments/game-detail-fragment";
-
-const tournaments = await fetchApi<tournamentTypesIndex[]>({
-  endpoint: "tournaments",
-  wrappedByKey: "data",
-  populate: {
-    year: {
-      populate: true,
-    },
-  },
-});
 
 export async function getStaticPaths() {
   const url = new URL(`${import.meta.env.STRAPI_URL}api/tournaments`);

@@ -5,6 +5,7 @@ import { gameTeamFragment } from "../../fragments/game-team-fragment";
 import { gameDetailFragment } from "../../fragments/game-detail-fragment";
 import qs from "qs";
 
+// ! because this doesnt go through strapi, it doesnt have the populate boolean issue
 export async function getStaticPaths() {
   const url = new URL(`${import.meta.env.STRAPI_URL}api/games`);
 
