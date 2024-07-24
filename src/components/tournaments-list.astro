@@ -1,77 +1,90 @@
 ---
-import type tournamentTypesIndex from "../../interfaces/tournament-types";
-import fetchApi from "../lib/strapi";
+// this is different but its easier to read
+// it might need some of the strapi steps or atleast an async await
+const url = new URL(`${import.meta.env.STRAPI_URL}api/tournaments`);
 
-const tournaments = await fetchApi<tournamentTypesIndex[]>({
-  endpoint: "tournaments",
-  wrappedByKey: "data",
-  populate: {
-    year: {
-      populate: true,
-    },
-    cancellation: {
-      populate: true,
-    },
+const populate = "?populate";
+const ampersand = "&populate";
+const games = "[games][populate][home_team]=true";
+const away_team = "[games][populate][away_team]=true";
+const home_team = "[games][populate][home_team]=true";
+const round = "[games][populate][round]=true";
 
+const data = await fetch(
+  `${url}?
+    ${populate}${games}
+    ${ampersand}${home_team}
+    ${ampersand}${away_team}
+    ${ampersand}${round}
+    `
+).then((response) => response.json());
 
+interface tournamentTypes {
+  attributes: {
+    year: number;
+    cancellation: string;
+    winner: string;
     games: {
-// ? why cant i populate the home_team and away_team?
-      home_team: {
-        populate: {
-          name: true,
-        },
-      },
-      // populate: true,
-      // Im not sure if I can keep going deeper or it maxes out at 1 level
-/*       populate: {
-        rounds: {
-          populate: {
-            name: true,
-          },
-        },
-      }, */
-/*         round: {
-          populate: true,
-        }, */
-      /* populate: {
-        data: {
-          populate: true,
+      data: {
+        attributes: {
+          home_team_score: number;
+          away_team_score: number;
+          home_team: {
+            data: {
+              attributes: {
+                name: string;
+              };
+            };
+          };
+          away_team: {
+            data: {
+              attributes: {
+                name: string;
+              };
+            };
+          };
           round: {
             data: {
-              populate: true,
-            },
-          },
-        },
-      }, */
-    },
-  },
+              attributes: {
+                name: string;
+              };
+            };
+          };
+        };
+      }[];
+    };
+  };
+}
+data.data.map((tournament: tournamentTypes) => {
+  tournament.attributes.games.data
+    .filter(
+      (game) =>
+        game.attributes?.round?.data?.attributes?.name === "championship"
+    )
+    .map((game) => {
+      if (game.attributes.home_team_score > game.attributes.away_team_score) {
+        tournament.attributes.winner = game.attributes.home_team.data.attributes.name;
+      } else {
+        tournament.attributes.winner = game.attributes.away_team.data.attributes.name;
+      }
+    });
 });
-
-// console.log(tournaments);
-const games = tournaments.map((tournament) => tournament.attributes.games);
-// console.log(games);
-// console.log(games.map((game) => game.data));
-const two = games.map((game) => game.data);
-console.log(two.map((game) => game.map((g2) => g2.attributes)));
 
 ---
 
 <ul>
-  {
-    tournaments.map((tournament) => (
+{data.data.map((tournament: tournamentTypes) => (
       <li>
         {tournament.attributes.cancellation ? (
           <strike>{tournament.attributes.year}</strike><span> - {tournament.attributes.cancellation}</span>
         ) : (
           <a href={`/tournaments/${tournament.attributes.year}`}>
             {tournament.attributes.year}
+            
+            {tournament.attributes.winner ? (`- Winner ${tournament.attributes.winner}`) : null}
           </a>
         )}
       </li>
     ))
   }
 </ul>
-
-
-
-<!-- TODO: winner is the next most interesting thing -->
