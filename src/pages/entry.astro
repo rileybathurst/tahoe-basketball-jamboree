@@ -1,0 +1,176 @@
+---
+import Layout from "../components/layout.astro";
+import fetchApi from "../lib/strapi";
+import {
+  BlocksRenderer,
+  type BlocksContent,
+} from "@strapi/blocks-react-renderer";
+
+type entryTypes = {
+  attributes: {
+    about: string;
+    fee: number;
+    due: string;
+    shirts: BlocksContent;
+    refund: string;
+  };
+};
+const entry = await fetchApi<entryTypes>({
+  endpoint: "entry",
+  wrappedByKey: "data",
+  populate: {
+    about: true,
+    fee: true,
+    due: true,
+    shirts: true,
+    refund: true,
+  },
+});
+---
+
+<Layout>
+  <main>
+    <h1>Entry Form</h1>
+    <p>{entry.attributes.about}</p>
+    <p>Entry fee: ${entry.attributes.fee}</p>
+    <!-- TODO: <p>Late fee: ${entry.attributes.fee}</p> -->
+    <p>Due: {entry.attributes.due}</p>
+    <BlocksRenderer content={entry.attributes.shirts} />
+
+    <form
+      name="entry"
+      data-netlify="true"
+      netlify-honeypot="bot-field"
+      method="POST"
+      action="/form-success"
+    >
+      <input type="hidden" name="form-name" value="contact" />
+
+      <input type="hidden" name="subject" value={`Entry Form`} />
+
+      <label>
+        School Name
+        <input type="text" name="school-name" />
+      </label>
+
+      <label>
+        Team Name
+        <input type="text" name="team-name" />
+      </label>
+
+      <label>
+        Colors
+        <input type="text" name="colors" />
+      </label>
+
+      <label>
+        Mascot
+        <input type="text" name="mascot" />
+      </label>
+
+      <label>
+        Enrollment
+        <input type="text" name="enrollment" />
+      </label>
+
+      <label>
+        Coach&apos;s Name
+        <input type="text" name="coachs-name" />
+      </label>
+
+      <label>
+        Phone
+        <input type="text" name="phone" />
+      </label>
+
+      <label>
+        Street address
+        <input type="text" name="street-address" />
+      </label>
+
+      <label>
+        City
+        <input type="text" name="city" />
+      </label>
+
+      <label>
+        State
+        <!-- TODO: make this a choice -->
+        <input type="text" name="state" />
+      </label>
+
+      <label>
+        Zip
+        <input type="number" name="zip" />
+      </label>
+
+      <label>
+        Email
+        <input type="text" name="email" />
+      </label>
+
+      <p>Select your total female cut Sizes:</p>
+      <!-- TODO: add female to shirt size title in a subtle way -->
+      <label>
+        Small
+        <input type="number" name="female-small" />
+      </label>
+
+      <label>
+        Medium
+        <input type="number" name="female-medium" />
+      </label>
+
+      <label>
+        Large
+        <input type="number" name="female-large" />
+      </label>
+
+      <label>
+        XL
+        <input type="number" name="female-xl" />
+      </label>
+
+      <label>
+        XXL
+        <input type="number" name="female-xxl" />
+      </label>
+
+      <p>Select unisex sizes for male coaches or parents:</p>
+      <label>
+        Small
+        <input type="number" name="unisex-small" />
+      </label>
+
+      <label>
+        Medium
+        <input type="number" name="unisex-medium" />
+      </label>
+
+      <label>
+        Large
+        <input type="number" name="unisex-large" />
+      </label>
+
+      <label>
+        XL
+        <input type="number" name="unisex-xl" />
+      </label>
+
+      <label>
+        XXL
+        <input type="number" name="unisex-xxl" />
+      </label>
+
+      <!-- TODO: do some work on the showing screen etc -->
+
+      <p class="sr-only">
+        <label>
+          Don&#39;t fill this out if you&#39;re human:
+          <input name="bot-field" />
+        </label>
+      </p>
+      <button type="submit">Send</button>
+    </form>
+  </main>
+</Layout>

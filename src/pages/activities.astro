@@ -1,0 +1,36 @@
+---
+import fetchApi from "../lib/strapi";
+import Layout from "../components/layout.astro";
+import {
+  BlocksRenderer,
+  type BlocksContent,
+} from "@strapi/blocks-react-renderer";
+
+type activitiesTypes = {
+  attributes: {
+    details: BlocksContent;
+  };
+}[];
+const activities = await fetchApi<activitiesTypes>({
+  endpoint: "activities",
+  wrappedByKey: "data",
+  populate: {
+    details: true,
+  },
+});
+---
+
+<Layout>
+  <main>
+    <h1>Activities</h1>
+    <ul>
+      {
+        activities.map((activity) => (
+          <li>
+            <BlocksRenderer content={activity.attributes.details} />
+          </li>
+        ))
+      }
+    </ul>
+  </main>
+</Layout>

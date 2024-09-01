@@ -1,0 +1,37 @@
+---
+import fetchApi from "../lib/strapi";
+import {
+  BlocksRenderer,
+  type BlocksContent,
+} from "@strapi/blocks-react-renderer";
+import Layout from "../components/layout.astro";
+
+type ruleTypes = {
+  id: number;
+  attributes: {
+    detail: BlocksContent;
+  };
+}[];
+// TODO: order by rule number
+const rules = await fetchApi<ruleTypes>({
+  endpoint: "rules",
+  wrappedByKey: "data",
+  populate: {
+    detail: true,
+  },
+});
+---
+
+<Layout>
+  <main>
+    <ol>
+      {
+        rules.map((rule) => (
+          <li>
+            <BlocksRenderer content={rule.attributes.detail} />
+          </li>
+        ))
+      }
+    </ol>
+  </main>
+</Layout>

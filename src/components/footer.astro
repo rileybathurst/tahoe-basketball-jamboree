@@ -1,3 +1,85 @@
+---
+import fetchApi from "../lib/strapi";
+
+type contactTypes = {
+  attributes: {
+    contactName: string;
+    contactPosition: string;
+    streetAddress: string;
+    addressLocality: string;
+    addressRegion: string;
+    postalCode: string;
+    email: string;
+    contactPhone: string;
+    officiateContact: string;
+    officiatePhone: string;
+  };
+};
+const contact = await fetchApi<contactTypes>({
+  endpoint: "contact",
+  wrappedByKey: "data",
+  populate: {
+    contactName: true,
+    contactPosition: true,
+    streetAddress: true,
+    addressLocality: true,
+    addressRegion: true,
+    postalCode: true,
+    email: true,
+    contactPhone: true,
+    officiateContact: true,
+    officiatePhone: true,
+  },
+});
+
+type metaTypes = {
+  attributes: {
+    siteName: string;
+  };
+};
+const meta = await fetchApi<metaTypes>({
+  endpoint: "meta",
+  wrappedByKey: "data",
+  populate: {
+    siteName: true,
+  },
+});
+---
+
 <footer>
-  <a href="/"> Lake Tahoe Basketball Jamboree </a>
+  <hr />
+  <a href="/">{meta.attributes.siteName}</a>
+
+  <section>
+    <h2>Contact</h2>
+    <strong>{contact.attributes.contactName}</strong>
+    <address>
+      {contact.attributes.contactPosition}
+      <br />
+      {contact.attributes.streetAddress}
+      <br />
+      {contact.attributes.addressLocality}, {contact.attributes.addressRegion}{
+        " "
+      }
+      {contact.attributes.postalCode}
+    </address>
+    <br />
+    <a href={`mailto:${contact.attributes.email}`}>
+      {contact.attributes.email}
+    </a>
+    <br />
+    <a href={`tel:${contact.attributes.contactPhone}`}>
+      <!-- TODO: stylize -->
+      {contact.attributes.contactPhone}
+    </a>
+  </section>
+  <hr />
+  <section>
+    Game officials needed.<br />
+    {contact.attributes.officiateContact}<br />
+    <a href={`tel:${contact.attributes.officiatePhone}`}>
+      <!-- TODO: stylize -->
+      {contact.attributes.officiatePhone}
+    </a>
+  </section>
 </footer>
