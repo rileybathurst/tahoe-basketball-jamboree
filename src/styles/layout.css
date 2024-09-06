@@ -75,6 +75,10 @@ footer {
   padding-inline: 0;
 }
 
+header {
+  padding-block: var(--kosciuszko);
+}
+
 /*------------------------------------*/
 /* #SCORECARD */
 /*------------------------------------*/

@@ -72,19 +72,18 @@ data.data.map((tournament: tournamentTypes) => {
 
 ---
 
-<ul>
-{data.data.map((tournament: tournamentTypes) => (
-      <li>
-        {tournament.attributes.cancellation ? (
-          <strike>{tournament.attributes.year}</strike><span> - {tournament.attributes.cancellation}</span>
-        ) : (
-          <a href={`/tournaments/${tournament.attributes.year}`}>
-            {tournament.attributes.year}
-            
-            {tournament.attributes.winner ? (`- Winner ${tournament.attributes.winner}`) : null}
-          </a>
-        )}
-      </li>
-    ))
-  }
+<ul class="tournaments">
+  {data.data.map((tournament: tournamentTypes) => (
+    <li class={tournament.attributes.cancellation ? "cancelled" : null} >
+      {tournament.attributes.cancellation ? (
+        <strike>{tournament.attributes.year}</strike><span> - {tournament.attributes.cancellation}</span>
+      ) : (
+        <a href={`/tournaments/${tournament.attributes.year}`}>
+          {tournament.attributes.year}
+          
+          {tournament.attributes.winner ? (`- Winner ${tournament.attributes.winner}`) : null}
+        </a>
+      )}
+    </li>
+  ))}
 </ul>

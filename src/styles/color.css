@@ -1,6 +1,14 @@
 /*------------------------------------*/
 /* #COLOR */
 /*------------------------------------*/
+
+header,
+footer {
+  background: var(--lake-500);
+  box-shadow: 0 0 0 100vmax var(--lake-500);
+  clip-path: inset(0 -100vmax);
+}
+
 /* .scoredeck {
 } */
 .scorecard {
@@ -11,16 +19,24 @@
     border: 2px solid var(--brilliance);
     box-shadow: var(--penumbra);
     color: var(--brilliance);
-
-    a {
-      color: var(--brilliance);
-    }
   }
 
   .win {
-    background-color: var(--win-100);
+    color: var(--win-100);
+    background-color: var(--win-500);
+    border-color: var(--win-100);
+
+    a {
+      color: var(--win-100);
+    }
   }
   .loss {
-    background-color: tomato;
+    color: var(--loose-100);
+    background-color: var(--loose-500);
+    border-color: var(--loose-100);
+
+    a {
+      color: var(--loose-100);
+    }
   }
 }

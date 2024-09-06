@@ -8,7 +8,24 @@ const {
   date,
   time,
   overtime,
+  fallback_winner,
 } = Astro.props;
+
+console.log(fallback_winner.data);
+
+// const game_winner = home_team_score > away_team_score ? home_team : away_team;
+let game_winner = {
+  data: {
+    id: 0,
+  },
+};
+if (home_team_score > away_team_score) {
+  game_winner = home_team;
+} else if (away_team_score > home_team_score) {
+  game_winner = away_team;
+} else if (fallback_winner.data) {
+  game_winner = fallback_winner;
+}
 ---
 
 <section class="scorecard">
@@ -19,7 +36,7 @@ const {
   }
 
   <div
-    class={`scoreteam ${home_team_score > away_team_score ? "win" : "loss"}`}
+    class={`scoreteam ${game_winner.data.id === home_team.data.id ? "win" : "loss"}`}
   >
     <a href={`/teams/${home_team.data?.attributes.slug}`}>
       {home_team.data?.attributes.name}
@@ -30,7 +47,7 @@ const {
   <div class="vs">vs</div>
 
   <div
-    class={`scoreteam ${away_team_score > home_team_score ? "win" : "loss"}`}
+    class={`scoreteam ${game_winner.data.id === away_team.data.id ? "win" : "loss"}`}
   >
     <a href={`/teams/${away_team.data?.attributes.slug}`}>
       {away_team.data?.attributes.name}

@@ -1,0 +1,31 @@
+/*------------------------------------*/
+/* #LISTS */
+/*------------------------------------*/
+
+ol {
+  li:not(:last-child) {
+    border-block-end: 1px solid var(--industrial-revolution);
+  }
+}
+
+/*------------------------------------*/
+/* #TOURNAMENTS */
+/*------------------------------------*/
+
+.tournaments {
+  list-style: none;
+  padding: 0;
+
+  li {
+    display: flex;
+    padding: var(--kosciuszko);
+    background-color: var(--lake-500);
+    margin-block-end: var(--elbrus);
+    border-radius: var(--s-radius);
+  }
+
+  li.cancelled {
+    color: var(--loose-100);
+    background-color: var(--loose-500);
+  }
+}

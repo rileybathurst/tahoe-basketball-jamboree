@@ -1,0 +1,15 @@
+/*------------------------------------*/
+/* #MENU */
+/*------------------------------------*/
+
+.nav-items {
+  background-color: var(--brilliance);
+  padding: var(--kosciuszko);
+  border-radius: var(--s-radius);
+
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+}

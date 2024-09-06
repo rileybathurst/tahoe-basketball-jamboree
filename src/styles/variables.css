@@ -17,13 +17,24 @@
   /* #COLOR */
   /*------------------------------------*/
 
-  --win-100: oklch(60% 0.11 160);
-  --win-600: oklch(95% 0.04 160);
+  --lake-100: oklch(55% 0.175 250);
+  --lake-400: oklch(90% 0.05 250);
+  --lake-500: oklch(95% 0.02 250);
 
+  --win-100: oklch(60% 0.11 160);
+  --win-500: oklch(95% 0.04 160);
+
+  --loose-100: oklch(65% 0.225 28);
+  /* TODO: I really dont like this color */
+  --loose-500: oklch(95% 0.225 28);
+
+  --loose-100: oklch(75% 0.18 55);
+  --loose-500: oklch(95% 0.03 55);
   /*------------------------------------*/
   /* #TYPOGRAPHY */
   /*------------------------------------*/
   --font-sans: sans-serif;
+  --font-slab: "Roboto Slab Variable", serif;
 
   /* 🏔 Mountain Names as Font Sizing Defaults */
   /* (Highest by Continent) */
@@ -64,4 +75,9 @@
   /* shadows on dark backgrounds */
   --penumbra--dark: 0 3px 6px hsla(0, 0%, 100%, 0.12),
     0 2px 4px hsla(0, 0%, 100%, 0.1);
+
+  /*------------------------------------*/
+
+  /* TODO: name */
+  --s-radius: 0.25rem;
 }

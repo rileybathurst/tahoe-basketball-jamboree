@@ -5,4 +5,9 @@
 body {
   font-size: 16px;
   font-family: var(--font-sans);
+  line-height: 1.25;
+}
+
+.font-slab {
+  font-family: var(--font-slab);
 }
