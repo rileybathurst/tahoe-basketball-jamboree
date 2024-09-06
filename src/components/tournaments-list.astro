@@ -78,7 +78,7 @@ data.data.map((tournament: tournamentTypes) => {
       {tournament.attributes.cancellation ? (
         <strike>{tournament.attributes.year}</strike><span> - {tournament.attributes.cancellation}</span>
       ) : (
-        <a href={`/tournaments/${tournament.attributes.year}`}>
+        <a href={`/tournaments/${tournament.attributes.year}`} class="font-slab">
           {tournament.attributes.year}
           
           {tournament.attributes.winner ? (`- Winner ${tournament.attributes.winner}`) : null}

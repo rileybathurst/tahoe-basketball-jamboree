@@ -2,6 +2,37 @@
 /* #COLOR */
 /*------------------------------------*/
 
+/* Double Stroke */
+/* TODO: double stroke */
+/* https://jsfiddle.net/0wn2ok4g/2/ */
+/* https://codepen.io/ingthorsson/pen/QVRVZP */
+
+.stroke-double {
+  position: relative;
+  background: transparent;
+  z-index: 0;
+  color: var(--lake-100);
+  text-align: center;
+}
+
+.stroke-double:before {
+  content: attr(title);
+  position: absolute;
+  -webkit-text-stroke: 0.25em var(--brilliance);
+
+  left: 0;
+  z-index: -1;
+}
+/* add a double stroke */
+/* .stroke-double:after {
+  content: attr(title);
+  position: absolute;
+  -webkit-text-stroke: 0.25em var(--black-out);
+  left: 0;
+  top: 0;
+  z-index: -2;
+} */
+
 header,
 footer {
   background: var(--lake-500);

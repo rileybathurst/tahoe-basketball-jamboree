@@ -8,6 +8,12 @@ body {
   line-height: 1.25;
 }
 
+h1 {
+  font-size: var(--everest);
+}
+
 .font-slab {
   font-family: var(--font-slab);
+  text-transform: uppercase;
+  text-align: center;
 }

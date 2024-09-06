@@ -38,7 +38,7 @@ if (home_team_score > away_team_score) {
   <div
     class={`scoreteam ${game_winner.data.id === home_team.data.id ? "win" : "loss"}`}
   >
-    <a href={`/teams/${home_team.data?.attributes.slug}`}>
+    <a href={`/teams/${home_team.data?.attributes.slug}`} class="font-slab">
       {home_team.data?.attributes.name}
     </a>
     {home_team_score}
@@ -49,7 +49,7 @@ if (home_team_score > away_team_score) {
   <div
     class={`scoreteam ${game_winner.data.id === away_team.data.id ? "win" : "loss"}`}
   >
-    <a href={`/teams/${away_team.data?.attributes.slug}`}>
+    <a href={`/teams/${away_team.data?.attributes.slug}`} class="font-slab">
       {away_team.data?.attributes.name}
     </a>
     {away_team_score}

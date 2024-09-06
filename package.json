@@ -13,6 +13,7 @@
     "@astrojs/check": "^0.8.2",
     "@astrojs/react": "^3.6.0",
     "@fontsource-variable/roboto-slab": "^5.0.21",
+    "@fontsource/graduate": "^5.0.20",
     "@strapi/blocks-react-renderer": "^1.0.1",
     "astro": "^4.12.1",
     "qs": "^6.12.3",
