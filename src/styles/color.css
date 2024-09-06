@@ -71,3 +71,41 @@ footer {
     }
   }
 }
+
+.vs {
+  color: var(--black-metal);
+  z-index: 0;
+  position: relative;
+  background: transparent;
+}
+
+.vs:before {
+  z-index: -1;
+  position: absolute;
+  left: 0;
+  -webkit-text-stroke: 0.1rem var(--brilliance);
+}
+
+.team-name a {
+  text-decoration: none;
+  z-index: 0;
+  position: relative;
+  background: transparent;
+}
+
+.team-name a:before {
+  z-index: -1;
+  position: absolute;
+  left: 0;
+  -webkit-text-stroke: 0.1rem var(--brilliance);
+}
+
+/*------------------------------------*/
+/* #FOOTER */
+/*------------------------------------*/
+
+.footer-contact {
+  background-color: var(--brilliance);
+  padding: var(--kosciuszko);
+  border: 1px solid var(--brilliance);
+}

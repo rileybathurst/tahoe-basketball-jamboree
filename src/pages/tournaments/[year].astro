@@ -175,7 +175,7 @@ const sortedDates = datesArray.sort((a, b) => a.localeCompare(b));
 
               .map((game) => {
                 if (game.attributes.date === date) {
-                  return <Scorecard {...game.attributes} />;
+                  return <Scorecard displayDate={false} {...game.attributes} />;
                 }
               })}
           </>

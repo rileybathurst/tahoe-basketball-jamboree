@@ -8,9 +8,37 @@ body {
   line-height: 1.25;
 }
 
-h1 {
+/*------------------------------------*/
+
+.everest {
   font-size: var(--everest);
 }
+
+.aconcagua {
+  font-size: var(--aconcagua);
+}
+
+.denali {
+  font-size: var(--denali);
+}
+
+.kilimanjaro {
+  font-size: var(--kilimanjaro);
+}
+
+.elbrus {
+  font-size: var(--elbrus);
+}
+
+.vinson {
+  font-size: var(--vinson);
+}
+
+.kosciuszko {
+  font-size: var(--kosciuszko);
+}
+
+/*------------------------------------*/
 
 .font-slab {
   font-family: var(--font-slab);

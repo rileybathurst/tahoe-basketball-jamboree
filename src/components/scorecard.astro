@@ -9,9 +9,8 @@ const {
   time,
   overtime,
   fallback_winner,
+  displayDate,
 } = Astro.props;
-
-console.log(fallback_winner.data);
 
 // const game_winner = home_team_score > away_team_score ? home_team : away_team;
 let game_winner = {
@@ -19,6 +18,7 @@ let game_winner = {
     id: 0,
   },
 };
+
 if (home_team_score > away_team_score) {
   game_winner = home_team;
 } else if (away_team_score > home_team_score) {
@@ -26,22 +26,31 @@ if (home_team_score > away_team_score) {
 } else if (fallback_winner.data) {
   game_winner = fallback_winner;
 }
+
+let gameTime = null; // Declare the variable gameTime and initialize it to null
+gameTime = time ? time.split(":").slice(0, 2).join(":") : null;
+const gamePeriod =
+  gameTime && Number.parseInt(gameTime.split(":")[0]) < 12 ? "AM" : "PM";
 ---
 
-<section class="scorecard">
+<section class="scorecard font-slab">
   {
     round ? (
-      <div class="round capitalize">{round?.data?.attributes.name}</div>
+      <div class="round capitalize denali">{round?.data?.attributes.name}</div>
     ) : null
   }
 
   <div
     class={`scoreteam ${game_winner.data.id === home_team.data.id ? "win" : "loss"}`}
   >
-    <a href={`/teams/${home_team.data?.attributes.slug}`} class="font-slab">
-      {home_team.data?.attributes.name}
-    </a>
-    {home_team_score}
+    <h3 class="denali team-name">
+      <a href={`/teams/${home_team.data?.attributes.slug}`} class="font-slab">
+        {home_team.data?.attributes.name}
+      </a>
+    </h3>
+    <h4 class="aconcagua">
+      {home_team_score}
+    </h4>
   </div>
 
   <div class="vs">vs</div>
@@ -49,22 +58,31 @@ if (home_team_score > away_team_score) {
   <div
     class={`scoreteam ${game_winner.data.id === away_team.data.id ? "win" : "loss"}`}
   >
-    <a href={`/teams/${away_team.data?.attributes.slug}`} class="font-slab">
-      {away_team.data?.attributes.name}
-    </a>
-    {away_team_score}
+    <h3 class="denali team-name">
+      <a href={`/teams/${away_team.data?.attributes.slug}`} class="font-slab">
+        {away_team.data?.attributes.name}
+      </a>
+    </h3>
+    <h4 class="aconcagua">
+      {away_team_score}
+    </h4>
   </div>
 
   {overtime ? <div class="overtime">Overtime</div> : null}
 
   <div class="game-details">
     <!-- TODO: real html dates -->
-    <!-- TODO: fix the splits -->
     {
       date || time ? (
         <p>
-          {date ? <span class="date">{date}</span> : null}
-          {time ? <span class="time">{time}</span> : null}
+          {date && displayDate !== false ? (
+            <span class="date">{date}</span>
+          ) : null}
+          {time ? (
+            <span class="time">
+              Game Time {gameTime} {gamePeriod}
+            </span>
+          ) : null}
         </p>
       ) : null
     }

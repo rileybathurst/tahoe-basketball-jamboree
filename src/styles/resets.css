@@ -5,8 +5,18 @@ body {
   margin: 0;
 }
 
-h1 {
-  margin-block-start: 0;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+}
+
+.scorecard:where(h1, h2, h3, h4, h5, h6, p) {
+  margin: 0;
 }
 
 .tournaments {

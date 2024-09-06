@@ -103,6 +103,7 @@ header {
 }
 
 .scoreteam {
+  /* TODO: needs sub-grid or equivilent */
   grid-row: 2;
 
   display: flex;
@@ -113,6 +114,10 @@ header {
   a {
     margin-block-end: 0;
   }
+}
+
+.game-details {
+  grid-column: 1/4;
 }
 
 .vs {
