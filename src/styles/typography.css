@@ -10,32 +10,51 @@ body {
 
 /*------------------------------------*/
 
+h1,
 .everest {
   font-size: var(--everest);
+  margin-block-end: var(--elbrus);
 }
 
+h2,
 .aconcagua {
   font-size: var(--aconcagua);
+  margin-block-end: var(--vinson);
 }
 
+h3,
 .denali {
   font-size: var(--denali);
+  margin-block-end: var(--vinson);
 }
 
+h4,
 .kilimanjaro {
   font-size: var(--kilimanjaro);
+  margin-block-end: var(--vinson);
 }
 
+h5,
 .elbrus {
   font-size: var(--elbrus);
+  margin-block-end: var(--vinson);
 }
 
+h6,
+p,
 .vinson {
   font-size: var(--vinson);
+  margin-block-end: var(--vinson);
 }
 
+small,
 .kosciuszko {
   font-size: var(--kosciuszko);
+  margin-block-end: var(--kosciuszko);
+}
+
+address {
+  font-style: normal;
 }
 
 /*------------------------------------*/

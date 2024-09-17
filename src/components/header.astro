@@ -55,6 +55,13 @@ const meta = await fetchApi<metaTypes>({
         /** Set whether the menu is currently expanded or collapsed. */
         const setExpanded = (expand: boolean) => {
           btn.setAttribute("aria-expanded", expand ? "true" : "false");
+          /* if (expand) {
+            menu.classList.add("expanded");
+            menu.classList.remove("hidden");
+          } else {
+            menu.classList.add("hidden");
+            menu.classList.remove("expanded");
+          } */
           menu.hidden = !expand;
         };
 

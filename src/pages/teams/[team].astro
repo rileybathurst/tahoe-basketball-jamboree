@@ -35,8 +35,10 @@ export async function getStaticPaths() {
     },
   });
 
-  const data = await fetch(`${url}?${query}`).then((response) =>
-    response.json()
+  const limit = 100;
+
+  const data = await fetch(`${url}?${query}&pagination[limit]=${limit}`).then(
+    (response) => response.json()
   );
 
   interface teamTypes {
@@ -119,7 +121,7 @@ const { team } = Astro.props as { team: teamPageTypes };
 
 <Layout>
   <main>
-    <h1>{team.attributes.name}</h1>
+    <h1 class="font-slab">{team.attributes.name}</h1>
 
     <hr />
 

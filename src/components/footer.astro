@@ -44,22 +44,28 @@ const meta = await fetchApi<metaTypes>({
     siteName: true,
   },
 });
+
+function Phone({ phone }: { phone: string }) {
+  return phone.replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2-$3");
+}
 ---
 
 <footer>
-  <h3 class="font-slab"><a href="/">{meta.attributes.siteName}</a></h3>
+  <h3 class="font-slab kilimanjaro">
+    <a href="/">{meta.attributes.siteName}</a>
+  </h3>
 
   <section class="footer-contact">
-    <h2 class="font-slab">Contact</h2>
+    <h2 class="elbrus">Contact</h2>
     <strong>{contact.attributes.contactName}</strong>
     <address>
       {contact.attributes.contactPosition}
       <br />
       {contact.attributes.streetAddress}
       <br />
-      {contact.attributes.addressLocality}, {contact.attributes.addressRegion}{
-        " "
-      }
+      {contact.attributes.addressLocality}
+      <br />
+      {contact.attributes.addressRegion},
       {contact.attributes.postalCode}
     </address>
     <br />
@@ -68,17 +74,16 @@ const meta = await fetchApi<metaTypes>({
     </a>
     <br />
     <a href={`tel:${contact.attributes.contactPhone}`}>
-      <!-- TODO: stylize -->
-      {contact.attributes.contactPhone}
+      <Phone phone={contact.attributes.officiatePhone} />
     </a>
   </section>
   <hr />
   <section>
     Game officials needed.<br />
     {contact.attributes.officiateContact}<br />
+
     <a href={`tel:${contact.attributes.officiatePhone}`}>
-      <!-- TODO: stylize -->
-      {contact.attributes.officiatePhone}
+      <Phone phone={contact.attributes.officiatePhone} />
     </a>
   </section>
 </footer>

@@ -9,3 +9,36 @@ a {
 a:hover {
   text-decoration: none;
 }
+
+.scorecard a:hover {
+  text-decoration: underline;
+}
+
+/*------------------------------------*/
+/* #BUTTON */
+/*------------------------------------*/
+
+button {
+  /* display: inline-block; * breaks the menu button visibility should probably be fixed */
+  padding: var(--kosciuszko) var(--elbrus);
+  border: 1px solid var(--lake-100);
+  background-color: var(--lake-500);
+  color: var(--lake-100);
+  font-size: var(--vinson);
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-block-end: var(--elbrus);
+}
+
+button:hover {
+  background-color: var(--lake-400);
+}
+
+button:active {
+  background-color: var(--lake-100);
+  color: var(--lake-500);
+}
+
+header button {
+  background-color: var(--brilliance);
+}

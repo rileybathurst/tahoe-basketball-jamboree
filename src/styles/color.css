@@ -72,11 +72,19 @@ footer {
   }
 }
 
+.scorecard.championship {
+  background-color: var(--gold-100);
+  box-shadow: 0 0 0 100vmax var(--gold-100);
+  clip-path: inset(0 -100vmax);
+  /* border-block: 2px solid var(--gold-200); * doesnt go full width */
+}
+
 .vs {
   color: var(--black-metal);
   z-index: 0;
   position: relative;
   background: transparent;
+  border-block: 2px solid var(--black-metal);
 }
 
 .vs:before {
@@ -98,14 +106,4 @@ footer {
   position: absolute;
   left: 0;
   -webkit-text-stroke: 0.1rem var(--brilliance);
-}
-
-/*------------------------------------*/
-/* #FOOTER */
-/*------------------------------------*/
-
-.footer-contact {
-  background-color: var(--brilliance);
-  padding: var(--kosciuszko);
-  border: 1px solid var(--brilliance);
 }

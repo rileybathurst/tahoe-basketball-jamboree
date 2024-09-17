@@ -2,8 +2,14 @@
 /* #LISTS */
 /*------------------------------------*/
 
+li {
+  line-height: 1.5;
+}
+
 ol {
   li:not(:last-child) {
+    margin-block-end: var(--kosciuszko);
+    padding-block-end: var(--kosciuszko);
     border-block-end: 1px solid var(--industrial-revolution);
   }
 }

@@ -13,6 +13,7 @@ interface fetchApiTypes {
   }; */
   // ! this will break but I want to figure out if i can get the data first
   populate: any;
+  limit?: number;
 }
 
 export default async function fetchApi<T>({
@@ -21,6 +22,7 @@ export default async function fetchApi<T>({
   wrappedByKey,
   wrappedByList,
   populate,
+  limit,
 }: fetchApiTypes): Promise<T> {
   if (endpoint.startsWith("/")) {
     endpoint = endpoint.slice(1);
@@ -29,7 +31,7 @@ export default async function fetchApi<T>({
   const url = new URL(
     `${import.meta.env.STRAPI_URL}api/${endpoint}${
       populate ? `?${qs.stringify({ populate })}` : ""
-    }`
+    }${limit ? `&pagination[limit]=${limit}` : ""}`
   );
 
   // with populate and no ggraphiql checking the structure on the api helps

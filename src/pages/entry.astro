@@ -30,7 +30,7 @@ const entry = await fetchApi<entryTypes>({
 
 <Layout>
   <main>
-    <h1>Entry Form</h1>
+    <h1 class="font-slab">Entry Form</h1>
     <p>{entry.attributes.about}</p>
     <p>Entry fee: ${entry.attributes.fee}</p>
     <!-- TODO: <p>Late fee: ${entry.attributes.fee}</p> -->
@@ -84,6 +84,15 @@ const entry = await fetchApi<entryTypes>({
       </label>
 
       <label>
+        Email
+        <input type="text" name="email" />
+      </label>
+
+      <hr />
+
+      <h3>Address</h3>
+
+      <label>
         Street address
         <input type="text" name="street-address" />
       </label>
@@ -93,74 +102,80 @@ const entry = await fetchApi<entryTypes>({
         <input type="text" name="city" />
       </label>
 
-      <label>
-        State
-        <!-- TODO: make this a choice -->
-        <input type="text" name="state" />
-      </label>
+      <div class="state-zip">
+        <label class="state">
+          State
+          <!-- TODO: make this a choice -->
+          <input type="text" name="state" />
+        </label>
 
-      <label>
-        Zip
-        <input type="number" name="zip" />
-      </label>
+        <label class="zip">
+          Zip
+          <input type="number" name="zip" />
+        </label>
+      </div>
 
-      <label>
-        Email
-        <input type="text" name="email" />
-      </label>
+      <hr />
+
+      <h3>Shirts</h3>
 
       <p>Select your total female cut Sizes:</p>
       <!-- TODO: add female to shirt size title in a subtle way -->
-      <label>
-        Small
-        <input type="number" name="female-small" />
-      </label>
 
-      <label>
-        Medium
-        <input type="number" name="female-medium" />
-      </label>
+      <div class="shirt-sizes">
+        <label>
+          Small
+          <input type="number" name="female-small" />
+        </label>
 
-      <label>
-        Large
-        <input type="number" name="female-large" />
-      </label>
+        <label>
+          Medium
+          <input type="number" name="female-medium" />
+        </label>
 
-      <label>
-        XL
-        <input type="number" name="female-xl" />
-      </label>
+        <label>
+          Large
+          <input type="number" name="female-large" />
+        </label>
 
-      <label>
-        XXL
-        <input type="number" name="female-xxl" />
-      </label>
+        <label>
+          XL
+          <input type="number" name="female-xl" />
+        </label>
+
+        <label>
+          XXL
+          <input type="number" name="female-xxl" />
+        </label>
+      </div>
 
       <p>Select unisex sizes for male coaches or parents:</p>
-      <label>
-        Small
-        <input type="number" name="unisex-small" />
-      </label>
+      <div class="shirt-sizes">
+        <label>
+          Small
+          <input type="number" name="unisex-small" />
+        </label>
 
-      <label>
-        Medium
-        <input type="number" name="unisex-medium" />
-      </label>
+        <label>
+          Medium
+          <input type="number" name="unisex-medium" />
+        </label>
 
-      <label>
-        Large
-        <input type="number" name="unisex-large" />
-      </label>
+        <label>
+          Large
+          <input type="number" name="unisex-large" />
+        </label>
 
-      <label>
-        XL
-        <input type="number" name="unisex-xl" />
-      </label>
+        <label>
+          XL
+          <input type="number" name="unisex-xl" />
+        </label>
 
-      <label>
-        XXL
-        <input type="number" name="unisex-xxl" />
-      </label>
+        <label>
+          XXL
+          <input type="number" name="unisex-xxl" />
+        </label>
+      </div>
 
       <!-- TODO: do some work on the showing screen etc -->
 

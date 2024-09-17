@@ -7,7 +7,7 @@
   flex-basis: var(--vulture);
   margin-inline: auto;
   padding-inline: var(--kosciuszko);
-  width: 100%;
+  width: calc(100% - 2 * var(--kosciuszko));
 }
 
 .stork {
@@ -15,27 +15,27 @@
   flex-basis: var(--stork);
   margin-inline: auto;
   padding-inline: var(--kosciuszko);
-  width: 100%;
+  width: calc(100% - 2 * var(--kosciuszko));
 }
 
 .condor,
 header,
-main,
-section,
 footer {
   max-width: var(--condor);
   flex-basis: var(--condor);
   margin-inline: auto;
   padding-inline: var(--kosciuszko);
-  width: 100%;
+  width: calc(100% - 2 * var(--kosciuszko));
 }
 
-.pelican {
+.pelican,
+main,
+section {
   max-width: var(--pelican);
   flex-basis: var(--pelican);
   margin-inline: auto;
   padding-inline: var(--kosciuszko);
-  width: 100%;
+  width: calc(100% - 2 * var(--kosciuszko));
 }
 
 .albatross {
@@ -43,7 +43,7 @@ footer {
   flex-basis: var(--albatross);
   margin-inline: auto;
   padding-inline: var(--kosciuszko);
-  width: 100%;
+  width: calc(100% - 2 * var(--kosciuszko));
 }
 
 /*------------------------------------*/
@@ -77,6 +77,11 @@ footer {
 
 header {
   padding-block: var(--kosciuszko);
+  margin-block-end: var(--aconcagua);
+}
+
+footer {
+  padding-block: var(--aconcagua);
 }
 
 /*------------------------------------*/
@@ -86,13 +91,17 @@ header {
 .scoredeck {
   width: 100%;
 }
+
 .scorecard {
   display: grid;
   grid-template-columns: 1fr 2rem 1fr;
+  gap: clamp(var(--kosciuszko), 1.667vw, var(--elbrus));
+  margin-block-end: var(--vinson);
+  padding: var(--vinson);
 
-  gap: clamp(var(--kosciuszko), 1.667vw, var(--denali));
-  margin-block-end: var(--aconcagua);
-  padding: 1rem;
+  h3 {
+    margin: 0;
+  }
 }
 
 .round {
@@ -104,7 +113,7 @@ header {
 
 .scoreteam {
   /* TODO: needs sub-grid or equivilent */
-  grid-row: 2;
+  grid-row: 1;
 
   display: flex;
   flex-flow: column wrap;
@@ -116,18 +125,28 @@ header {
   }
 }
 
-.game-details {
-  grid-column: 1/4;
-}
-
 .vs {
-  grid-row: 2;
+  grid-row: 1;
   grid-column: 2;
   align-self: center;
   justify-self: center;
 }
 
 .details {
-  grid-row: 3;
-  grid-column: 1 / 4;
+  grid-row: 2;
+  grid-column: 1/4;
+}
+
+.scorecard:has(.round) {
+  .scoreteam {
+    grid-row: 2;
+  }
+
+  .vs {
+    grid-row: 2;
+  }
+
+  .details {
+    grid-row: 3;
+  }
 }

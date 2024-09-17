@@ -23,6 +23,7 @@ export async function getStaticPaths() {
       },
       games: {
         populate: {
+          id: true,
           home_team: {
             gameTeamFragment,
           },
@@ -69,6 +70,7 @@ interface yearPageTypes {
     notes: BlocksContent;
     games: {
       data: Array<{
+        id: number;
         attributes: {
           home_team: {
             data: {
@@ -131,6 +133,15 @@ for (const game of year.attributes.games.data) {
 // convert to array
 const datesArray: string[] = Array.from(datesPlayed);
 const sortedDates = datesArray.sort((a, b) => a.localeCompare(b));
+// const sortedDates = datesArray.sort((a, b) => a.getTime() - b.getTime());
+
+// console.log(sortedDates);
+const dateName = (date: string) => {
+  const dateObj = new Date(date);
+  return dateObj.toDateString();
+};
+
+// console.log(year.attributes.games);
 ---
 
 <Layout>
@@ -141,7 +152,7 @@ const sortedDates = datesArray.sort((a, b) => a.localeCompare(b));
     {
       year.attributes.notes ? (
         <>
-          <h2>Notes</h2>
+          <h2 class="kilimanjaro">Notes</h2>
           <BlocksRenderer content={year.attributes.notes} />
         </>
       ) : null
@@ -154,7 +165,7 @@ const sortedDates = datesArray.sort((a, b) => a.localeCompare(b));
         sortedDates.map((date) => (
           <>
             {/* TODO: convert to readable dates */}
-            <h2>{date}</h2>
+            <h2 class="font-slab">{dateName(date)}</h2>
             {year.attributes.games.data
               // sort by time
               // this needs a fallback for when there is no time
@@ -175,7 +186,13 @@ const sortedDates = datesArray.sort((a, b) => a.localeCompare(b));
 
               .map((game) => {
                 if (game.attributes.date === date) {
-                  return <Scorecard displayDate={false} {...game.attributes} />;
+                  return (
+                    <Scorecard
+                      displayDate={false}
+                      id={game.id}
+                      {...game.attributes}
+                    />
+                  );
                 }
               })}
           </>

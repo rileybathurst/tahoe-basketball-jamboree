@@ -36,14 +36,45 @@ export async function getStaticPaths() {
     },
   });
 
-  const data = await fetch(`${url}?${query}`).then((response) =>
-    response.json()
-  );
+  // const limit = 999;
+
+  // `${import.meta.env.STRAPI_API_URL}/api/articles?pagination[page]=${page}&pagination[pageSize]=${pageSize}&populate=*`
+
+  // console.log(data);
+  interface GameData {
+    id: number;
+    attributes: {
+      name: string;
+      // Add other attributes as needed
+    };
+  }
+
+  let data: GameData[] = [];
+  let start = 0;
+  const limit = 25;
+  let hasMore = true;
+
+  while (hasMore) {
+    const response = await fetch(
+      `${url}?${query}&pagination[start]=${start}&pagination[limit]=${limit}`
+    );
+    const pageData = await response.json();
+    data = data.concat(pageData.data);
+
+    if (pageData.data.length < limit) {
+      hasMore = false;
+    } else {
+      start += limit;
+    }
+  }
+
+  // console.log(data);
+  // console.log(data.data);
 
   interface gameTypes {
     id: number;
   }
-  return data.data.map((game: gameTypes) => {
+  return data.map((game: gameTypes) => {
     // console.log(game);
     // console.log(game.id);
     return {
@@ -58,16 +89,17 @@ interface gamePageTypes {
     name: number;
   };
 }
-const { game } = Astro.props as { game: gamePageTypes };
+const { game } = Astro.props as unknown as { game: gamePageTypes };
 
 // console.log(game);
 // console.log(game.attributes);
-// console.log(game.attributes.locations.data);
+// console.log(game.attributes.location);
 ---
 
 <Layout>
   <main>
     <section class="scoredeck">
+      <!-- TODO: dont link to the page its already on -->
       <Scorecard {...game.attributes} />
     </section>
   </main>

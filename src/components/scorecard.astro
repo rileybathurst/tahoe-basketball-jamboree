@@ -1,5 +1,6 @@
 ---
 const {
+  id,
   round,
   home_team,
   home_team_score,
@@ -31,11 +32,23 @@ let gameTime = null; // Declare the variable gameTime and initialize it to null
 gameTime = time ? time.split(":").slice(0, 2).join(":") : null;
 const gamePeriod =
   gameTime && Number.parseInt(gameTime.split(":")[0]) < 12 ? "AM" : "PM";
+
+// console.log(Astro.props);
+
+function ShortName({ name }: { name: string }) {
+  if (name.toLowerCase().includes("high school")) {
+    name = name.replace(/high school/gi, "HS");
+  }
+
+  return name;
+}
 ---
 
-<section class="scorecard font-slab">
+<section
+  class={`scorecard font-slab ${round ? round?.data?.attributes.name : null}`}
+>
   {
-    round ? (
+    round?.data?.attributes.name ? (
       <div class="round capitalize denali">{round?.data?.attributes.name}</div>
     ) : null
   }
@@ -45,12 +58,11 @@ const gamePeriod =
   >
     <h3 class="denali team-name">
       <a href={`/teams/${home_team.data?.attributes.slug}`} class="font-slab">
-        {home_team.data?.attributes.name}
+        <!-- {home_team.data?.attributes.name} -->
+        <ShortName name={home_team.data?.attributes.name} />
       </a>
     </h3>
-    <h4 class="aconcagua">
-      {home_team_score}
-    </h4>
+    {home_team_score ? <h4 class="aconcagua">{home_team_score}</h4> : null}
   </div>
 
   <div class="vs">vs</div>
@@ -60,18 +72,24 @@ const gamePeriod =
   >
     <h3 class="denali team-name">
       <a href={`/teams/${away_team.data?.attributes.slug}`} class="font-slab">
-        {away_team.data?.attributes.name}
+        <!-- {away_team.data?.attributes.name} -->
+        <ShortName name={away_team.data?.attributes.name} />
       </a>
     </h3>
-    <h4 class="aconcagua">
-      {away_team_score}
-    </h4>
+    {away_team_score ? <h4 class="aconcagua">{away_team_score}</h4> : null}
   </div>
 
-  {overtime ? <div class="overtime">Overtime</div> : null}
+  <div class="details">
+    <p><a href={`/games/${id}`}>Details:</a></p>
+    {
+      !away_team_score && !home_team_score ? (
+        <p class="no-scores">No scores recorded</p>
+      ) : null
+    }
 
-  <div class="game-details">
+    {overtime ? <div class="overtime">Game went to overtime</div> : null}
     <!-- TODO: real html dates -->
+
     {
       date || time ? (
         <p>
@@ -80,7 +98,8 @@ const gamePeriod =
           ) : null}
           {time ? (
             <span class="time">
-              Game Time {gameTime} {gamePeriod}
+              {/* Game Time  */}
+              {gameTime} {gamePeriod}
             </span>
           ) : null}
         </p>
