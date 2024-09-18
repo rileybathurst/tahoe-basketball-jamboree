@@ -4,6 +4,10 @@
 
 li {
   line-height: 1.5;
+
+  p:last-child {
+    margin-block-end: 0;
+  }
 }
 
 ol {
@@ -33,5 +37,19 @@ ol {
   li.cancelled {
     color: var(--loose-100);
     background-color: var(--loose-500);
+  }
+}
+
+/*------------------------------------*/
+/* #LODGE */
+/*------------------------------------*/
+
+.lodging {
+  list-style: none;
+  padding: 0;
+
+  .lodge {
+    padding: var(--kosciuszko);
+    background-color: var(--brilliance);
   }
 }

@@ -36,6 +36,7 @@ export async function getStaticPaths() {
     },
   });
 
+  // You cant do a limit of more than 100 so we have to do it in chunks
   // const limit = 999;
 
   // `${import.meta.env.STRAPI_API_URL}/api/articles?pagination[page]=${page}&pagination[pageSize]=${pageSize}&populate=*`

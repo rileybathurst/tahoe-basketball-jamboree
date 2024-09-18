@@ -1,0 +1,41 @@
+---
+import fetchApi from "../lib/strapi";
+import Layout from "../components/layout.astro";
+
+type teamsTypes = {
+  attributes: {
+    name: string;
+    slug: string;
+  };
+}[];
+const teams = await fetchApi<teamsTypes>({
+  endpoint: "teams",
+  wrappedByKey: "data",
+  populate: {
+    name: true,
+    slug: true,
+  },
+  limit: 100,
+});
+
+// console.log(teams);
+---
+
+<Layout>
+  <main>
+    <h1 class="font-slab">Teams</h1>
+    <ul>
+      {
+        teams
+          .sort((a, b) => a.attributes.name.localeCompare(b.attributes.name))
+          .map((team) => (
+            <li>
+              <a href={`/teams/${team.attributes.slug}`}>
+                {team.attributes.name}
+              </a>
+            </li>
+          ))
+      }
+    </ul>
+  </main>
+</Layout>

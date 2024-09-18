@@ -1,12 +1,13 @@
 ---
 import fetchApi from "../lib/strapi";
 import Layout from "../components/layout.astro";
+import { string } from "astro/zod";
 
 type lodgingsTypes = {
   attributes: {
     name: string;
     link: string;
-    phone: string;
+    phone: number;
     details: string;
   };
 }[];
@@ -20,14 +21,23 @@ const lodgings = await fetchApi<lodgingsTypes>({
     details: true,
   },
 });
+
+const phoneFormat = (phone: number) => {
+  const phoneString = phone.toString();
+  const match = phoneString.match(/^(\d{3})(\d{3})(\d{4})$/);
+  if (match) {
+    return `(${match[1]}) ${match[2]}-${match[3]}`;
+  }
+  return null;
+};
 ---
 
 <Layout>
   <main>
-    <ul>
+    <ul class="lodging">
       {
         lodgings.map((lodge) => (
-          <li>
+          <li class="lodge">
             <h2>
               {lodge.attributes.link ? (
                 <a href={lodge.attributes.link}>{lodge.attributes.name}</a>
@@ -37,9 +47,8 @@ const lodgings = await fetchApi<lodgingsTypes>({
             </h2>
             {lodge.attributes.phone ? (
               <p>
-                <a href={lodge.attributes.phone}>
-                  {/* TODO: stylize */}
-                  {lodge.attributes.phone}
+                <a href={lodge.attributes.phone.toString()}>
+                  {phoneFormat(lodge.attributes.phone)}
                 </a>
               </p>
             ) : null}

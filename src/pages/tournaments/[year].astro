@@ -142,12 +142,45 @@ const dateName = (date: string) => {
 };
 
 // console.log(year.attributes.games);
+
+// set of teams playing
+const teams = new Set<string>();
+for (const game of year.attributes.games.data) {
+  teams.add(
+    JSON.stringify({
+      name: game.attributes.home_team.data.attributes.name,
+      slug: game.attributes.home_team.data.attributes.slug,
+    })
+  );
+  teams.add(
+    JSON.stringify({
+      name: game.attributes.away_team.data.attributes.name,
+      slug: game.attributes.away_team.data.attributes.slug,
+    })
+  );
+}
+
+const teamsArray = Array.from(teams).map((team) => JSON.parse(team));
+// console.log(teams);
+
+// console.log(year.attributes.games.data);
 ---
 
 <Layout>
   <main>
     <!-- TODO: make this a left sidebar so Im doing something interesting -->
     <h1 class="font-slab">{year.attributes.year} Tournament</h1>
+
+    <h2 class="denali">Teams</h2>
+    <ul>
+      {
+        teamsArray.map((team) => (
+          <li>
+            <a href={`/teams/${team.slug}`}>{team.name}</a>
+          </li>
+        ))
+      }
+    </ul>
 
     {
       year.attributes.notes ? (
@@ -158,8 +191,6 @@ const dateName = (date: string) => {
       ) : null
     }
 
-    <!-- TODO: order is going to be hard unless I do it manually as only some have dates -->
-    <!-- TODO: component for a score-card -->
     <section class="scoredeck">
       {
         sortedDates.map((date) => (

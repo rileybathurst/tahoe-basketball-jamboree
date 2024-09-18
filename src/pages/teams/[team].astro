@@ -18,8 +18,23 @@ export async function getStaticPaths() {
         populate: true,
       },
 
+      school: {
+        populate: {
+          name: true,
+          slug: true,
+
+          teams: {
+            populate: {
+              name: true,
+              slug: true,
+            },
+          },
+        },
+      },
+
       home_games: {
         populate: {
+          id: true,
           home_team: {
             gameTeamFragment,
           },
@@ -28,6 +43,34 @@ export async function getStaticPaths() {
           },
           fallback_winner: {
             gameTeamFragment,
+          },
+          tournament: {
+            year: true,
+          },
+          round: {
+            name: true,
+          },
+          gameDetailFragment,
+        },
+      },
+
+      away_games: {
+        populate: {
+          id: true,
+          home_team: {
+            gameTeamFragment,
+          },
+          away_team: {
+            gameTeamFragment,
+          },
+          fallback_winner: {
+            gameTeamFragment,
+          },
+          round: {
+            name: true,
+          },
+          tournament: {
+            year: true,
           },
           gameDetailFragment,
         },
@@ -41,6 +84,7 @@ export async function getStaticPaths() {
     (response) => response.json()
   );
 
+  // TODO: these need to go more places
   interface teamTypes {
     attributes: {
       slug: string;
@@ -54,81 +98,154 @@ export async function getStaticPaths() {
   });
 }
 
+type teamTypes = {
+  data: {
+    attributes: {
+      id: number;
+      name: string;
+      slug: string;
+    };
+  };
+}
+
+type gameTypes = {
+  data: {
+    id: number;
+    attributes: {
+      id: number;
+      rounds: {
+        data: {
+          attributes: {
+            name: string;
+          };
+        };
+      };
+      home_team: teamTypes
+      home_team_score: number;
+
+      away_team: teamTypes
+      away_team_score: number;
+      
+      date: string;
+      time: string;
+      locations: {
+        data: {
+          attributes: {
+            id: number;
+            name: string;
+          };
+        };
+      };
+      
+      fallback_winner: teamTypes
+      overtime: boolean;
+      
+      tournament: {
+        data: {
+          attributes: {
+            year: string;
+          };
+        };
+      };
+    };
+  }[];
+};
+
 // TODO: variables for the types
 interface teamPageTypes {
   attributes: {
     name: string;
-    home_games: {
+    school: {
       data: {
         attributes: {
-          rounds: {
-            data: {
-              attributes: {
-                name: string;
-              };
-            };
-          };
-          home_team: {
+          teams: {
             data: {
               attributes: {
                 id: number;
                 name: string;
                 slug: string;
               };
-            };
+            }[];
           };
-          home_team_score: number;
-          away_team: {
-            data: {
-              attributes: {
-                id: number;
-                name: string;
-                slug: string;
-              };
-            };
-          };
-          away_team_score: number;
-          date: string;
-          time: string;
-          locations: {
-            data: {
-              attributes: {
-                id: number;
-                name: string;
-              };
-            };
-          };
-          fallback_winner: {
-            data: {
-              attributes: {
-                id: number;
-                name: string;
-                slug: string;
-              };
-            };
-          };
-          overtime: boolean;
+          name: string;
         };
-      }[];
+      };
     };
+    away_games: gameTypes;
+    home_games: gameTypes;
   };
-}
+};
 const { team } = Astro.props as { team: teamPageTypes };
 
-// console.log(team.attributes);
-// console.log(team.attributes.home_games.data);
+// create a set of tournaments a team has competed in
+const tournamentsPlayed = new Set<number>();
+for (const game of team.attributes.home_games.data) {
+  const year = Number.parseInt(game.attributes.tournament.data.attributes.year);
+  tournamentsPlayed.add(year);
+}
+
+for (const game of team.attributes.away_games.data) {
+  const year = Number.parseInt(game.attributes.tournament.data.attributes.year);
+  tournamentsPlayed.add(year);
+}
+
+// Convert the set to an array and sort it in descending order
+const tournamentsPlayedArray = Array.from(tournamentsPlayed).sort(
+  (a, b) => b - a
+);
+
+// console.log(team);
+// console.log(team.attributes.home_games);
+
+// combine home and away games into a single array
+const games = team.attributes.home_games.data.concat(team.attributes.away_games.data);
 ---
 
 <Layout>
   <main>
     <h1 class="font-slab">{team.attributes.name}</h1>
 
+    {
+      team.attributes.school.data ? (
+        <>
+          <h2 class="denali">School</h2>
+          <p>{team.attributes.school.data.attributes.name}</p>
+        </>
+
+    <h2 class="denali">School Teams</h2>
+    <ul>
+      {
+        team.attributes.school.data.attributes.teams.data.map((team) => (
+          <li>
+            <a href={`/teams/${team.attributes.slug}`}>
+              {team.attributes.name}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+      )
+    : null}
+
     <hr />
 
-    <section class="scoredeck">
+    <h2 class="denali">Tournaments Played</h2>
+    <ul>
       {
-        team.attributes.home_games.data.map((game) => (
-          <Scorecard {...game.attributes} />
+        tournamentsPlayedArray.map((tournament) => (
+          <li>
+            <a href={`/tournaments/${tournament}`}>{tournament}</a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <section class="scoredeck">
+      {games.map((game) => (
+          <Scorecard 
+          {...game.attributes}
+          id={game.id}
+          />
         ))
       }
     </section>

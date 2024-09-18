@@ -28,16 +28,36 @@ if (home_team_score > away_team_score) {
   game_winner = fallback_winner;
 }
 
-let gameTime = null; // Declare the variable gameTime and initialize it to null
-gameTime = time ? time.split(":").slice(0, 2).join(":") : null;
-const gamePeriod =
-  gameTime && Number.parseInt(gameTime.split(":")[0]) < 12 ? "AM" : "PM";
+const displayTime = (time: string) => {
+  let gameTime = null; // Declare the variable gameTime and initialize it to null
+
+  gameTime = time.split(":").slice(0, 2).join(":");
+  // console.log(gameTime);
+
+  let gameHour = gameTime.split(":").slice(0, 1).join(":");
+  if (gameHour.startsWith("0")) {
+    gameHour = gameHour.substring(1);
+  }
+  const gameHourNumber = Number.parseInt(gameHour);
+  gameHourNumber > 12 ? gameHourNumber - 12 : gameHourNumber;
+
+  const gameMinute = gameTime.split(":").slice(1, 2).join(":");
+
+  const gamePeriod =
+    gameTime && Number.parseInt(gameTime.split(":")[0]) < 12 ? "AM" : "PM";
+
+  return `${gameHour}:${gameMinute} ${gamePeriod}`;
+};
 
 // console.log(Astro.props);
 
 function ShortName({ name }: { name: string }) {
   if (name.toLowerCase().includes("high school")) {
     name = name.replace(/high school/gi, "HS");
+  }
+
+  if (name.toLowerCase().includes("preparatory school")) {
+    name = name.replace(/preparatory school/gi, "Prep");
   }
 
   return name;
@@ -96,12 +116,7 @@ function ShortName({ name }: { name: string }) {
           {date && displayDate !== false ? (
             <span class="date">{date}</span>
           ) : null}
-          {time ? (
-            <span class="time">
-              {/* Game Time  */}
-              {gameTime} {gamePeriod}
-            </span>
-          ) : null}
+          {time ? <span class="time">{displayTime(time)}</span> : null}
         </p>
       ) : null
     }
