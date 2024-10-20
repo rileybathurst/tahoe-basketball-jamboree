@@ -1,0 +1,18 @@
+---
+import { Image, inferRemoteSize } from "astro:assets";
+const file = "2012-2nd-Justin_Siena-Napa_CA.JPG";
+const alt = "2012 Runner Up: Justin Sienna, Napa, CA";
+const { width, height } = await inferRemoteSize(
+  `${import.meta.env.AWS}${file}`
+);
+---
+
+<figure>
+  <Image
+    src=`${import.meta.env.AWS}${file}`
+    alt={alt}
+    width={width}
+    height={height}
+  />
+  <figcaption>{alt}</figcaption>
+</figure>
