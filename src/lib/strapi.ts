@@ -1,4 +1,4 @@
-import qs from "qs";
+// import qs from "qs";
 import querystring from "node:querystring";
 
 interface fetchApiTypes {
@@ -13,10 +13,9 @@ interface fetchApiTypes {
     };
   }; */
   // ! this will break but I want to figure out if i can get the data first
-  populate?: any;
+  // populate?: any;
   limit?: number;
-  // fields?: string[];
-  fields?: any;
+  fields?: string[];
 }
 
 export default async function fetchApi<T>({
@@ -24,7 +23,6 @@ export default async function fetchApi<T>({
   query,
   wrappedByKey,
   wrappedByList,
-  populate,
   fields,
   limit,
 }: fetchApiTypes): Promise<T> {
@@ -48,8 +46,8 @@ export default async function fetchApi<T>({
   );
 
   // with populate and no ggraphiql checking the structure on the api helps
-  // ! test logging
-  console.log(url);
+  // * test logging
+  // console.log(url);
   // console.log(url.href);
 
   // update from strapi 4 - 5

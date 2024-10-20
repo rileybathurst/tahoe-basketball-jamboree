@@ -1,89 +1,82 @@
 ---
-// import fetchApi from "../lib/strapi";
+import fetchApi from "../lib/strapi";
 
 type contactTypes = {
-  attributes: {
-    contactName: string;
-    contactPosition: string;
-    streetAddress: string;
-    addressLocality: string;
-    addressRegion: string;
-    postalCode: string;
-    email: string;
-    contactPhone: string;
-    officiateContact: string;
-    officiatePhone: string;
-  };
+  contactName: string;
+  contactPosition: string;
+  streetAddress: string;
+  addressLocality: string;
+  addressRegion: string;
+  postalCode: string;
+  email: string;
+  contactPhone: string;
+  officiateContact: string;
+  officiatePhone: string;
 };
-/* const contact = await fetchApi<contactTypes>({
+const contact = await fetchApi<contactTypes>({
   endpoint: "contact",
   wrappedByKey: "data",
-  populate: {
-    contactName: true,
-    contactPosition: true,
-    streetAddress: true,
-    addressLocality: true,
-    addressRegion: true,
-    postalCode: true,
-    email: true,
-    contactPhone: true,
-    officiateContact: true,
-    officiatePhone: true,
-  },
-}); */
+  fields: [
+    "contactName",
+    "contactPosition",
+    "streetAddress",
+    "addressLocality",
+    "addressRegion",
+    "postalCode",
+    "email",
+    "contactPhone",
+    "officiateContact",
+    "officiatePhone",
+  ],
+});
 
 type metaTypes = {
-  attributes: {
-    siteName: string;
-  };
+  siteName: string;
 };
-/* const meta = await fetchApi<metaTypes>({
+const meta = await fetchApi<metaTypes>({
   endpoint: "meta",
   wrappedByKey: "data",
-  populate: {
-    siteName: true,
-  },
-}); */
+  fields: ["siteName"],
+});
 
 function Phone({ phone }: { phone: string }) {
   return phone.replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2-$3");
 }
 ---
 
-<!-- ! all turned off for strapi 5 migration --><!-- <footer>
+<footer>
   <h3 class="font-slab kilimanjaro">
-    <a href="/">{meta.attributes.siteName}</a>
+    <a href="/">{meta.siteName}</a>
   </h3>
-
   <section class="footer-contact">
     <h2 class="elbrus">Contact</h2>
-    <strong>{contact.attributes.contactName}</strong>
+    <strong>{contact.contactName}</strong>
     <address>
-      {contact.attributes.contactPosition}
+      {contact.contactPosition}
       <br />
-      {contact.attributes.streetAddress}
+      {contact.streetAddress}
       <br />
-      {contact.attributes.addressLocality}
+      {contact.addressLocality}
       <br />
-      {contact.attributes.addressRegion},
-      {contact.attributes.postalCode}
+      {contact.addressRegion},
+      {contact.postalCode}
     </address>
     <br />
-    <a href={`mailto:${contact.attributes.email}`}>
-      {contact.attributes.email}
+    <a href={`mailto:${contact.email}`}>
+      {contact.email}
     </a>
     <br />
-    <a href={`tel:${contact.attributes.contactPhone}`}>
-      <Phone phone={contact.attributes.officiatePhone} />
+    <a href={`tel:${contact.contactPhone}`}>
+      <Phone phone={contact.officiatePhone} />
     </a>
   </section>
   <hr />
   <section>
     Game officials needed.<br />
-    {contact.attributes.officiateContact}<br />
+    {contact.officiateContact}<br />
 
-    <a href={`tel:${contact.attributes.officiatePhone}`}>
-      <Phone phone={contact.attributes.officiatePhone} />
+    <a href={`tel:${contact.officiatePhone}`}>
+      <Phone phone={contact.officiatePhone} />
     </a>
   </section>
-</footer> -->
+</footer>

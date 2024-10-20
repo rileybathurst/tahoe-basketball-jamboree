@@ -7,16 +7,12 @@ import {
 } from "@strapi/blocks-react-renderer";
 
 type activitiesTypes = {
-  attributes: {
-    details: BlocksContent;
-  };
+  details: BlocksContent;
 }[];
 const activities = await fetchApi<activitiesTypes>({
   endpoint: "activities",
   wrappedByKey: "data",
-  populate: {
-    details: true,
-  },
+  fields: ["details"],
 });
 ---
 
@@ -27,7 +23,7 @@ const activities = await fetchApi<activitiesTypes>({
       {
         activities.map((activity) => (
           <li>
-            <BlocksRenderer content={activity.attributes.details} />
+            <BlocksRenderer content={activity.details} />
           </li>
         ))
       }
