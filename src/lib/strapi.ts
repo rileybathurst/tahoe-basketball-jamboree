@@ -1,4 +1,5 @@
 import qs from "qs";
+import querystring from "node:querystring";
 
 interface fetchApiTypes {
   endpoint: string;
@@ -12,8 +13,10 @@ interface fetchApiTypes {
     };
   }; */
   // ! this will break but I want to figure out if i can get the data first
-  populate: any;
+  populate?: any;
   limit?: number;
+  // fields?: string[];
+  fields?: any;
 }
 
 export default async function fetchApi<T>({
@@ -22,21 +25,38 @@ export default async function fetchApi<T>({
   wrappedByKey,
   wrappedByList,
   populate,
+  fields,
   limit,
 }: fetchApiTypes): Promise<T> {
   if (endpoint.startsWith("/")) {
     endpoint = endpoint.slice(1);
   }
 
+  const fieldPasser = {
+    fields: fields,
+  };
+
+  // Use the stringify() method on the object
+  const passedFields = querystring.stringify(fieldPasser);
+
   const url = new URL(
     `${import.meta.env.STRAPI_URL}api/${endpoint}${
-      populate ? `?${qs.stringify({ populate })}` : ""
-    }${limit ? `&pagination[limit]=${limit}` : ""}`
+      fields ? `?${passedFields}` : ""
+    }
+    ${limit ? `&pagination[limit]=${limit}` : ""}
+    `
   );
 
   // with populate and no ggraphiql checking the structure on the api helps
-  // console.log(url);
+  // ! test logging
+  console.log(url);
   // console.log(url.href);
+
+  // update from strapi 4 - 5
+  // was http://45.79.101.19:1346/api/meta?populate%5BsiteName%5D=true&populate%5BbyLine%5D=true,
+
+  // needs to be
+  // http://45.79.101.19:1346/api/meta?fields=siteName&fields=byLine
 
   if (query) {
     for (const [key, value] of Object.entries(query)) {

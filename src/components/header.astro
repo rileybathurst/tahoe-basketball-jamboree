@@ -3,83 +3,91 @@ import fetchApi from "../lib/strapi";
 import MenuList from "./menu-list.astro";
 
 type metaTypes = {
-  attributes: {
+  siteName: string;
+  byLine: string;
+  fields: {
     siteName: string;
+    byLine: string;
   };
 };
 const meta = await fetchApi<metaTypes>({
   endpoint: "meta",
   wrappedByKey: "data",
-  populate: {
-    siteName: true,
-  },
+  fields: ["siteName", "byLine"],
 });
+
+console.log("Header meta:");
+console.log(meta);
 ---
 
 <header>
-  <h1 class="font-slab stroke-double" title={meta.attributes.siteName}>
+  <h1 class="font-slab stroke-double" title={meta.siteName}>
     <!-- <a href="/"> -->
-    {meta.attributes.siteName}
+    {meta.siteName}
     <!-- </a> -->
-  </h1>
+    <!-- </h1> -->
+    <h2>
+      {meta.byLine}
+    </h2>
 
-  <menu-button>
-    <template>
-      <button class="menu-button" aria-expanded="false">
-        <span class="sr-only">Menu</span>
-      </button>
-    </template>
-  </menu-button>
+    <menu-button>
+      <template>
+        <button class="menu-button" aria-expanded="false">
+          <span class="sr-only">Menu</span>
+        </button>
+      </template>
+    </menu-button>
 
-  <div id="menu-content">
-    <MenuList />
-  </div>
+    <div id="menu-content">
+      <MenuList />
+    </div>
 
-  <script>
-    class MenuButton extends HTMLElement {
-      constructor() {
-        super();
+    <script>
+      class MenuButton extends HTMLElement {
+        constructor() {
+          super();
 
-        // Inject menu toggle button when JS runs.
-        this.appendChild(
-          this.querySelector("template")!.content.cloneNode(true)
-        );
-        const btn = this.querySelector("button")!;
+          // Inject menu toggle button when JS runs.
+          this.appendChild(
+            this.querySelector("template")!.content.cloneNode(true)
+          );
+          const btn = this.querySelector("button")!;
 
-        // Hide menu (shown by default to support no-JS browsers).
-        const menu = document.getElementById("menu-content")!;
-        menu.hidden = true;
-        // Add "menu-content" class in JS to avoid covering content in non-JS browsers.
-        menu.classList.add("menu-content");
+          // Hide menu (shown by default to support no-JS browsers).
+          const menu = document.getElementById("menu-content")!;
+          menu.hidden = true;
+          // Add "menu-content" class in JS to avoid covering content in non-JS browsers.
+          menu.classList.add("menu-content");
 
-        /** Set whether the menu is currently expanded or collapsed. */
-        const setExpanded = (expand: boolean) => {
-          btn.setAttribute("aria-expanded", expand ? "true" : "false");
-          /* if (expand) {
+          /** Set whether the menu is currently expanded or collapsed. */
+          const setExpanded = (expand: boolean) => {
+            btn.setAttribute("aria-expanded", expand ? "true" : "false");
+            /* if (expand) {
             menu.classList.add("expanded");
             menu.classList.remove("hidden");
           } else {
             menu.classList.add("hidden");
             menu.classList.remove("expanded");
           } */
-          menu.hidden = !expand;
-        };
+            menu.hidden = !expand;
+          };
 
-        // Toggle menu visibility when the menu button is clicked.
-        btn.addEventListener("click", () => setExpanded(menu.hidden));
+          // Toggle menu visibility when the menu button is clicked.
+          btn.addEventListener("click", () => setExpanded(menu.hidden));
 
-        // Hide menu button for large screens.
-        const handleViewports = (e: MediaQueryList | MediaQueryListEvent) => {
-          setExpanded(e.matches);
-          btn.hidden = e.matches;
-        };
+          // Hide menu button for large screens.
+          const handleViewports = (e: MediaQueryList | MediaQueryListEvent) => {
+            setExpanded(e.matches);
+            btn.hidden = e.matches;
+          };
 
-        // ? check 50rem is correct
-        const mediaQueries = window.matchMedia("(min-width: 50rem)");
-        handleViewports(mediaQueries);
-        mediaQueries.addEventListener("change", handleViewports);
+          // ? check 50rem is correct
+          const mediaQueries = window.matchMedia("(min-width: 50rem)");
+          handleViewports(mediaQueries);
+          mediaQueries.addEventListener("change", handleViewports);
+        }
       }
-    }
-    customElements.define("menu-button", MenuButton);
-  </script>
+      customElements.define("menu-button", MenuButton);
+    </script>
+  </h1>
 </header>

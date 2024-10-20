@@ -1,5 +1,5 @@
 ---
-import fetchApi from "../lib/strapi";
+// import fetchApi from "../lib/strapi";
 
 type contactTypes = {
   attributes: {
@@ -15,7 +15,7 @@ type contactTypes = {
     officiatePhone: string;
   };
 };
-const contact = await fetchApi<contactTypes>({
+/* const contact = await fetchApi<contactTypes>({
   endpoint: "contact",
   wrappedByKey: "data",
   populate: {
@@ -30,27 +30,27 @@ const contact = await fetchApi<contactTypes>({
     officiateContact: true,
     officiatePhone: true,
   },
-});
+}); */
 
 type metaTypes = {
   attributes: {
     siteName: string;
   };
 };
-const meta = await fetchApi<metaTypes>({
+/* const meta = await fetchApi<metaTypes>({
   endpoint: "meta",
   wrappedByKey: "data",
   populate: {
     siteName: true,
   },
-});
+}); */
 
 function Phone({ phone }: { phone: string }) {
   return phone.replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2-$3");
 }
 ---
 
-<footer>
+<!-- ! all turned off for strapi 5 migration --><!-- <footer>
   <h3 class="font-slab kilimanjaro">
     <a href="/">{meta.attributes.siteName}</a>
   </h3>
@@ -86,4 +86,4 @@ function Phone({ phone }: { phone: string }) {
       <Phone phone={contact.attributes.officiatePhone} />
     </a>
   </section>
-</footer>
+</footer> -->
