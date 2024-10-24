@@ -1,0 +1,18 @@
+---
+import { Image, inferRemoteSize } from "astro:assets";
+const file = "Alhambra final 4 2006.jpg";
+const alt = "2006 Alhambra Final Four";
+const { width, height } = await inferRemoteSize(
+  `${import.meta.env.AWS}${file}`
+);
+---
+
+<figure>
+  <Image
+    src=`${import.meta.env.AWS}${file}`
+    alt={alt}
+    width={width}
+    height={height}
+  />
+  <figcaption>{alt}</figcaption>
+</figure>
