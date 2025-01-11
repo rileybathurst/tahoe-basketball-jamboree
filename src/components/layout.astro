@@ -1,4 +1,5 @@
 ---
+import fetchApi from "../lib/strapi";
 import Header from "./header.astro";
 import Footer from "./footer.astro";
 
@@ -6,6 +7,22 @@ import "../styles/app.css";
 // Supports weights 100-900
 import "@fontsource-variable/roboto-slab";
 import "@fontsource/graduate";
+
+type metaTypes = {
+  siteName: string;
+  byLine: string;
+  fields: {
+    siteName: string;
+    byLine: string;
+  };
+};
+const meta = await fetchApi<metaTypes>({
+  endpoint: "meta",
+  wrappedByKey: "data",
+  fields: ["siteName", "byLine"],
+});
+
+const { title } = Astro.props;
 ---
 
 <html lang="en">
@@ -14,7 +31,7 @@ import "@fontsource/graduate";
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
-    <title>Astro</title>
+    <title>{title ? `${title} | ${meta.siteName}` : meta.siteName}</title>
   </head>
   <body>
     <Header />

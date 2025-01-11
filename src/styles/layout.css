@@ -78,6 +78,7 @@ section {
 header {
   padding-block: var(--kosciuszko);
   margin-block-end: var(--aconcagua);
+  max-width: var(--pelican);
 }
 
 footer {

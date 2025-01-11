@@ -22,11 +22,11 @@ const meta = await fetchApi<metaTypes>({
 
 <header>
   <h1 class="font-slab stroke-double" title={meta.siteName}>
-    <!-- <a href="/"> -->
-    {meta.siteName}
-    <!-- </a> -->
+    <a href="/">
+      {meta.siteName}
+    </a>
   </h1>
-  <h2>
+  <h2 class="text-center">
     {meta.byLine}
   </h2>
 

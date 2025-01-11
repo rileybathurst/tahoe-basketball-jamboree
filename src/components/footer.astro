@@ -32,11 +32,13 @@ const contact = await fetchApi<contactTypes>({
 
 type metaTypes = {
   siteName: string;
+  byLine: string;
+  facebook: string;
 };
 const meta = await fetchApi<metaTypes>({
   endpoint: "meta",
   wrappedByKey: "data",
-  fields: ["siteName"],
+  fields: ["siteName", "byLine", "facebook"],
 });
 
 function Phone({ phone }: { phone: string }) {
@@ -48,6 +50,8 @@ function Phone({ phone }: { phone: string }) {
   <h3 class="font-slab kilimanjaro">
     <a href="/">{meta.siteName}</a>
   </h3>
+  <h4 class="text-center">{meta.byLine}</h4>
+  <hr />
   <section class="footer-contact">
     <h2 class="elbrus">Contact</h2>
     <strong>{contact.contactName}</strong>
@@ -77,6 +81,18 @@ function Phone({ phone }: { phone: string }) {
 
     <a href={`tel:${contact.officiatePhone}`}>
       <Phone phone={contact.officiatePhone} />
+    </a>
+    <hr />
+  </section>
+
+  <section>
+    <a
+      href={meta.facebook}
+      class="facebook"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      Facebook
     </a>
   </section>
 </footer>

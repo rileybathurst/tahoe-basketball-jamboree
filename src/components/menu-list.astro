@@ -1,24 +1,39 @@
 ---
+import fetchApi from "../lib/strapi";
+
+type spreadsheetTypes = {
+  results: string;
+  rules: string;
+  entryForm: string;
+  lodging: string;
+  activities: string;
+};
+const spreadsheet = await fetchApi<spreadsheetTypes>({
+  endpoint: "spreadsheet",
+  wrappedByKey: "data",
+});
+
 const menuList: { label: string; href: string }[] = [
-  // { label: "Tournaments", href: "/tournaments/" },
-  // { label: "Teams", href: "/teams/" },
   {
     label: "Results",
-    href: "https://docs.google.com/spreadsheets/d/1RtIbSrGr9deAUAaQ91A0LXTgUHLHKsrDu1GMO9TqAME/edit?usp=sharing",
+    href: spreadsheet.results,
   },
   {
     label: "Rules",
-    href: "https://docs.google.com/document/d/17AgcEpLf-4XdCjYEyXB_expcniCk0SXAyEQ3V1Uscw0/edit?usp=sharing",
+    href: spreadsheet.rules,
   },
   {
     label: "Entry Form",
-    href: "https://docs.google.com/document/d/17AgcEpLf-4XdCjYEyXB_expcniCk0SXAyEQ3V1Uscw0/edit?usp=sharing",
+    href: spreadsheet.entryForm,
   },
   {
     label: "Lodging",
-    href: "https://docs.google.com/spreadsheets/d/1RtIbSrGr9deAUAaQ91A0LXTgUHLHKsrDu1GMO9TqAME/edit?usp=sharing",
+    href: spreadsheet.lodging,
   },
-  { label: "Activities", href: "/activities/" },
+  {
+    label: "Activities",
+    href: spreadsheet.activities,
+  },
   { label: "Photos", href: "/photos/" },
 ];
 ---
