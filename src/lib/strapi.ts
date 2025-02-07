@@ -30,12 +30,28 @@ export default async function fetchApi<T>({
     endpoint = endpoint.slice(1);
   }
 
+  // console.log(fields);
+  /* if (fields) {
+    fields = fields.map((field, index) => `${field}[${index}]`);
+  } */
+
+  // console.log(fields);
+
   const fieldPasser = {
     fields: fields,
   };
 
+  // console.log(fieldPasser);
+  // console.log(fieldPasser.fields);
+  // console.log(fieldPasser.fields.keys()); // nope
+  // console.log(typeof fieldPasser.fields); // object
+
+  // console.log(fieldPasser.fields[0]);
+
   // Use the stringify() method on the object
-  const passedFields = querystring.stringify(fieldPasser);
+  const passedFields = querystring.stringify({ fields: fields });
+
+  console.log(passedFields);
 
   const url = new URL(
     `${import.meta.env.STRAPI_URL}api/${endpoint}${
@@ -53,8 +69,9 @@ export default async function fetchApi<T>({
   // update from strapi 4 - 5
   // was http://45.79.101.19:1346/api/meta?populate%5BsiteName%5D=true&populate%5BbyLine%5D=true,
 
+  // https://docs.strapi.io/dev-docs/api/rest/populate-select#field-selection
   // needs to be
-  // http://45.79.101.19:1346/api/meta?fields=siteName&fields=byLine
+  // http://45.79.101.19:1346/api/meta?fields[0]=siteName&fields[1]=byLine
 
   if (query) {
     for (const [key, value] of Object.entries(query)) {
