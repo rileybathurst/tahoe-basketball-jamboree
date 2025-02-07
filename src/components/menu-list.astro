@@ -2,21 +2,30 @@
 import fetchApi from "../lib/strapi";
 
 type spreadsheetTypes = {
-  results: string;
+  scheduleResults: string;
   rules: string;
   entryForm: string;
   lodging: string;
   activities: string;
+  history: string;
 };
 const spreadsheet = await fetchApi<spreadsheetTypes>({
   endpoint: "spreadsheet",
   wrappedByKey: "data",
+  fields: [
+    "scheduleResults",
+    "rules",
+    "entryForm",
+    "lodging",
+    "activities",
+    "history",
+  ],
 });
 
 const menuList: { label: string; href: string }[] = [
   {
-    label: "Results",
-    href: spreadsheet.results,
+    label: "Schedule-Results",
+    href: spreadsheet.scheduleResults,
   },
   {
     label: "Rules",
@@ -33,6 +42,10 @@ const menuList: { label: string; href: string }[] = [
   {
     label: "Activities",
     href: spreadsheet.activities,
+  },
+  {
+    label: "History",
+    href: spreadsheet.history,
   },
   { label: "Photos", href: "/photos/" },
 ];
@@ -53,6 +66,11 @@ const menuList: { label: string; href: string }[] = [
             },
           ]}
           href={href}
+          target={
+            typeof href === "string" && href.startsWith("https")
+              ? "_blank"
+              : undefined
+          }
         >
           {label}
         </a>
