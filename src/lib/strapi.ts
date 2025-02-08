@@ -30,28 +30,22 @@ export default async function fetchApi<T>({
     endpoint = endpoint.slice(1);
   }
 
-  // console.log(fields);
-  /* if (fields) {
-    fields = fields.map((field, index) => `${field}[${index}]`);
-  } */
+  const keyValueFields = fields?.map((field, index) => {
+    return {
+      name: field,
+      number: index,
+    };
+  });
+  // console.log(keyValueFields);
 
-  // console.log(fields);
+  const passedFields = querystring.stringify(
+    keyValueFields?.reduce((acc, field) => {
+      acc[`fields[${field.number}]`] = field.name;
+      return acc;
+    }, {} as Record<string, string>)
+  );
 
-  const fieldPasser = {
-    fields: fields,
-  };
-
-  // console.log(fieldPasser);
-  // console.log(fieldPasser.fields);
-  // console.log(fieldPasser.fields.keys()); // nope
-  // console.log(typeof fieldPasser.fields); // object
-
-  // console.log(fieldPasser.fields[0]);
-
-  // Use the stringify() method on the object
-  const passedFields = querystring.stringify({ fields: fields });
-
-  console.log(passedFields);
+  // console.log(passedFields);
 
   const url = new URL(
     `${import.meta.env.STRAPI_URL}api/${endpoint}${
@@ -61,7 +55,7 @@ export default async function fetchApi<T>({
     `
   );
 
-  // with populate and no ggraphiql checking the structure on the api helps
+  // with populate and no graphiql checking the structure on the api helps
   // * test logging
   // console.log(url);
   // console.log(url.href);
@@ -72,6 +66,8 @@ export default async function fetchApi<T>({
   // https://docs.strapi.io/dev-docs/api/rest/populate-select#field-selection
   // needs to be
   // http://45.79.101.19:1346/api/meta?fields[0]=siteName&fields[1]=byLine
+
+  // * currently outputting with %5B0%5D instead of [0] I dont know if thats a problem
 
   if (query) {
     for (const [key, value] of Object.entries(query)) {
