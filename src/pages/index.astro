@@ -1,14 +1,24 @@
 ---
+import fetchApi from "../lib/strapi";
 import Layout from "../components/layout.astro";
-// import TournamentsList from "../components/tournaments-list.astro";
-import MenuList from "../components/menu-list.astro";
+
+type statementTypes = {
+  home: string;
+  fields: {
+    home: string;
+  };
+};
+const statement = await fetchApi<statementTypes>({
+  endpoint: "statement",
+  wrappedByKey: "data",
+  fields: ["home"],
+});
 ---
 
 <Layout>
   <main>
     <h2>
-      A great opportunity for your team to come together and enjoy a weekend
-      they will never forget.
+      {statement.home}
     </h2>
   </main>
 </Layout>
