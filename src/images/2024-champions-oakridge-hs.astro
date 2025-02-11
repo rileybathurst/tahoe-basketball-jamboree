@@ -1,7 +1,7 @@
 ---
 import { Image, inferRemoteSize } from "astro:assets";
 const file = "2024-champions-Oakridge_HS.jpeg";
-const alt = "2024 Champions Oak Ridge HS";
+const alt = "2024 Champions Oakridge HS";
 const { width, height } = await inferRemoteSize(
   `${import.meta.env.AWS}${file}`
 );
