@@ -1,7 +1,7 @@
 ---
 import fetchApi from "../lib/strapi";
 import Layout from "../components/layout.astro";
-import Champions2024ElDoradoHills from "../images/2024-champions-el_dorado_hills.astro";
+import Champions2024Oakridge from "../images/2024-champions-oakridge-hs.astro";
 import RunnerUp2024CardinalNewman from "../images/2024-runner_up-cardinal_newman.astro";
 
 type statementTypes = {
@@ -27,7 +27,7 @@ const statement = await fetchApi<statementTypes>({
   </main>
 
   <section class="pelican wrap">
-    <Champions2024ElDoradoHills />
+    <Champions2024Oakridge />
     <RunnerUp2024CardinalNewman />
   </section>
 </Layout>
