@@ -34,11 +34,13 @@ type metaTypes = {
   siteName: string;
   byLine: string;
   facebook: string;
+  cancelled: boolean;
+  cancelNote: string;
 };
 const meta = await fetchApi<metaTypes>({
   endpoint: "meta",
   wrappedByKey: "data",
-  fields: ["siteName", "byLine", "facebook"],
+  fields: ["siteName", "byLine", "facebook", "cancelled", "cancelNote"],
 });
 
 function Phone({ phone }: { phone: string }) {
@@ -50,7 +52,19 @@ function Phone({ phone }: { phone: string }) {
   <h3 class="font-slab kilimanjaro">
     <a href="/">{meta.siteName}</a>
   </h3>
-  <h4 class="text-center">{meta.byLine}</h4>
+  <h4 class="text-center">
+    {
+      meta.cancelled ? (
+        <>
+          <strike>{meta.byLine}</strike>
+          <br />
+          {meta.cancelNote}
+        </>
+      ) : (
+        meta.byLine
+      )
+    }
+  </h4>
   <hr />
   <section class="footer-contact">
     <h2 class="elbrus">Contact</h2>

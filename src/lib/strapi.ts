@@ -39,10 +39,13 @@ export default async function fetchApi<T>({
   // console.log(keyValueFields);
 
   const passedFields = querystring.stringify(
-    keyValueFields?.reduce((acc, field) => {
-      acc[`fields[${field.number}]`] = field.name;
-      return acc;
-    }, {} as Record<string, string>)
+    keyValueFields?.reduce(
+      (acc, field) => {
+        acc[`fields[${field.number}]`] = field.name;
+        return acc;
+      },
+      {} as Record<string, string>
+    )
   );
 
   // console.log(passedFields);
@@ -58,7 +61,7 @@ export default async function fetchApi<T>({
   // with populate and no graphiql checking the structure on the api helps
   // * test logging
   // console.log(url);
-  // console.log(url.href);
+  console.log(url.href);
 
   // update from strapi 4 - 5
   // was http://45.79.101.19:1346/api/meta?populate%5BsiteName%5D=true&populate%5BbyLine%5D=true,

@@ -5,15 +5,13 @@ import MenuList from "./menu-list.astro";
 type metaTypes = {
   siteName: string;
   byLine: string;
-  fields: {
-    siteName: string;
-    byLine: string;
-  };
+  cancelled: boolean;
+  cancelNote: string;
 };
 const meta = await fetchApi<metaTypes>({
   endpoint: "meta",
   wrappedByKey: "data",
-  fields: ["siteName", "byLine"],
+  fields: ["siteName", "byLine", "cancelled", "cancelNote"],
 });
 
 // console.log("Header meta:");
@@ -27,7 +25,17 @@ const meta = await fetchApi<metaTypes>({
     </a>
   </h1>
   <h2 class="text-center">
-    {meta.byLine}
+    {
+      meta.cancelled ? (
+        <>
+          <strike>{meta.byLine}</strike>
+          <br />
+          {meta.cancelNote}
+        </>
+      ) : (
+        meta.byLine
+      )
+    }
   </h2>
 
   <menu-button>

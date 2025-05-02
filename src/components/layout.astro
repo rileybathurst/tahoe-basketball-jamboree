@@ -11,15 +11,13 @@ import "@fontsource/graduate";
 type metaTypes = {
   siteName: string;
   byLine: string;
-  fields: {
-    siteName: string;
-    byLine: string;
-  };
+  cancelled: boolean;
+  cancelNote: string;
 };
 const meta = await fetchApi<metaTypes>({
   endpoint: "meta",
   wrappedByKey: "data",
-  fields: ["siteName", "byLine"],
+  fields: ["siteName", "byLine", "cancelled", "cancelNote"],
 });
 
 const { title } = Astro.props;
